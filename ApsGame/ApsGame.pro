@@ -1,5 +1,5 @@
 # allows to add DEPLOYMENTFOLDERS and links to the Felgo library and QtCreator auto-completion
-CONFIG += felgo
+CONFIG += felgo felgo-live
 
 # uncomment this line to add the Live Client Module and use live reloading with your custom C++ code
 # for the remaining steps to build a custom Live Code Reload app see here: https://felgo.com/custom-code-reload-app/
@@ -38,7 +38,12 @@ DEPLOYMENTFOLDERS += assetsFolder
 
 
 # The .cpp file which was generated for your project. Feel free to hack it.
-SOURCES += main.cpp
+SOURCES += src/main.cpp \
+    src/DatabaseApplication.cpp \
+    src/MainApplication.cpp \
+    src/ModelApplication.cpp \
+    src/obj/User.cpp \
+    src/tools/Tools.cpp
 
 
 android {
@@ -58,3 +63,46 @@ win32 {
 macx {
     ICON = macx/app_icon.icns
 }
+
+DISTFILES += \
+    qml/MainItem.qml \
+    qml/common/AudioManager.qml \
+    qml/common/Background.qml \
+    qml/common/Ground.qml \
+    qml/common/SceneBase.qml \
+    qml/entities/BorderElement.qml \
+    qml/entities/Pipes.qml \
+    qml/entities/Player.qml \
+    qml/game/GameOverScreen.qml \
+    qml/game/Level.qml \
+    qml/game/Numbers.qml \
+    qml/game/WaitScreen.qml \
+    qml/scenes/AccountScene.qml \
+    qml/scenes/Connection.qml \
+    qml/scenes/ConnectionScene.qml \
+    qml/scenes/CreditsScene.qml \
+    qml/scenes/GameScene.qml \
+    qml/scenes/ImageButton.qml \
+    qml/scenes/InputLine.qml \
+    qml/scenes/Menu.qml \
+    qml/scenes/MenuScene.qml \
+    qml/scenes/ScoresScene.qml \
+    qml/scenes/SettingsScene.qml \
+    qml/scenes/SignUpScene.qml \
+    qml/scenes/SplashScreenScene.qml
+
+HEADERS += \
+    inc/DatabaseApplication.h \
+    inc/MainApplication.h \
+    inc/ModelApplication.h \
+    inc/obj/User.h \
+    inc/tools/Enums.h \
+    inc/tools/Tools.h
+
+INCLUDEPATH += \
+    inc/obj/ \
+    inc/tools/ \
+    src/tools/ \
+    inc/database/ \
+    inc/ \
+    src/
