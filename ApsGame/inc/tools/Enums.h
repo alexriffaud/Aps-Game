@@ -6,6 +6,8 @@ enum class Request
     SIGNUP,
     LOGIN_STATE,
     CHANGE_ACCOUNT,
+    GLOBAL_SCORE,
+    PERSONAL_SCORE,
     DISCONNECT
 };
 #endif // ENUMS_H

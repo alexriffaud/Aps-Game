@@ -25,7 +25,7 @@ int main(int argc, char *argv[])
 
     engine.rootContext()->setContextProperty("mainApp", &mainApplication);
     engine.rootContext()->setContextProperty("currentUser", mainApplication.modelApplication()->user());
-
+    engine.rootContext()->setContextProperty("modelScores", mainApplication.modelApplication()->globalScoreList());
 
     // Set an optional license key from project file
     // This does not work if using Felgo Live, only for Felgo Cloud Builds and local builds

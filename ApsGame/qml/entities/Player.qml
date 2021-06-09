@@ -1,81 +1,76 @@
-import QtQuick 2.0
 import Felgo 3.0
-
+import QtQuick 2.0
 
 EntityBase {
-  id: player
-  entityType: "player"
+    id: player
+    entityType: "player"
+    width: 50
+    height: 50
 
-  property real upwardforce: -280
-  property int resetX: 0
-  property int resetY: 0
+    signal gameOver()
 
-  width: collider.radius * 2
-  height: collider.radius * 2
+    // add some aliases for easier access to those properties from outside
+    property alias collider: collider
+    property alias horizontalVelocity: collider.linearVelocity.x
 
-  signal gameOver()
+    // the contacts property is used to determine if the player is in touch with any solid objects (like ground or platform), because in this case the player is walking, which enables the ability to jump. contacts > 0 --> walking state
+    property int contacts: 0
+    // property binding to determine the state of the player like described above
+    state: contacts > 0 ? "walking" : "jumping"
+    onStateChanged: console.debug("player.state " + state)
 
-  Component.onCompleted: reset()
-
-  onGameOver: {
-    spriteSequence.running = false
-  }
-
-  SpriteSequence {
-    id: spriteSequence
-
-    anchors.centerIn: parent
-
-    Sprite {
-      name: "idle"
-      frameCount: 3
-      frameRate: 10
-
-      frameWidth: 34
-      frameHeight: 24
-      source: "../../assets/img/birdSprite.png"
+    // here you could use a SpriteSquenceVPlay to animate your player
+    MultiResolutionImage {
+        source: "../../assets/img/player/run.png"
     }
-    rotation: wabbleX.running ? 0 : collider.linearVelocity.y/10
-  }
 
-  CircleCollider {
-    id: collider
+    onGameOver: {
 
-    radius: spriteSequence.height/2
-    bodyType: Body.Dynamic
-  }
+    }
 
-  function reset() {
-    player.x = resetX
-    player.y = resetY
-    collider.body.linearVelocity = Qt.point(0,0)
-    activateWabbling()
-    spriteSequence.running = true
-  }
+    BoxCollider {
+        id: collider
+        height: parent.height
+        width: 30
+        anchors.horizontalCenter: parent.horizontalCenter
+        // this collider must be dynamic because we are moving it by applying forces and impulses
+        bodyType: Body.Dynamic // this is the default value but I wanted to mention it ;)
+        fixedRotation: true // we are running, not rolling...
+        bullet: true // for super accurate collision detection, use this sparingly, because it's quite performance greedy
+        sleepingAllowed: false
+        // apply the horizontal value of the TwoAxisController as force to move the player left and right
+        force: Qt.point(controller.xAxis*170*32,0)
+        // limit the horizontal velocity
+        onLinearVelocityChanged: {
+            if(linearVelocity.x > 170) linearVelocity.x = 170
+            if(linearVelocity.x < -170) linearVelocity.x = -170
+        }
+    }
 
-  function push() {
-    wabbleX.stop()
-    wabbleY.stop()
-    audioManager.play(audioManager.idWING)
-    collider.body.linearVelocity = Qt.point(0,0)
-    var localForwardVector = collider.body.toWorldVector(Qt.point(0, upwardforce));
-    collider.body.applyLinearImpulse(localForwardVector, collider.body.getWorldCenter());
-  }
+    // this timer is used to slow down the players horizontal movement. the linearDamping property of the collider works quite similar, but also in vertical direction, which we don't want to be slowed
+    Timer {
+        id: updateTimer
+        // set this interval as high as possible to improve performance, but as low as needed so it still looks good
+        interval: 60
+        running: true
+        repeat: true
+        onTriggered: {
+            var xAxis = controller.xAxis;
+            // if xAxis is 0 (no movement command) we slow the player down until he stops
+            if(xAxis === 0) {
+                if(Math.abs(player.horizontalVelocity) > 10) player.horizontalVelocity /= 1.5
+                else player.horizontalVelocity = 0
+            }
+        }
+    }
 
-  NumberAnimation on x {running: false; id: wabbleX; duration: 4000; loops: Animation.Infinite; easing.type: Easing.CosineCurve}
-  NumberAnimation on y {running: false; id: wabbleY; duration: 4000; loops: Animation.Infinite; easing.type: Easing.SineCurve}
-
-  function activateWabbling() {
-    var wableVal = 25
-    var rand = Math.random()
-    var dir = (rand < 0.5 ? -wableVal/4*rand : wableVal/4*rand )
-    wabbleX.from = player.x+dir
-    wabbleX.to = player.x-dir
-    wabbleX.start()
-    rand = Math.random()
-    dir = (rand < 0.5 ? -wableVal*rand : wableVal*rand )
-    wabbleY.from = player.y+dir
-    wabbleY.to = player.y-dir
-    wabbleY.start()
-  }
+    function jump() {
+        console.debug("jump requested at player.state " + state)
+        if(player.state == "walking") {
+            console.debug("do the jump")
+            // for the jump, we simply set the upwards velocity of the collider
+            collider.linearVelocity.y = -420
+        }
+    }
 }
+

@@ -9,8 +9,8 @@ Scene {
     signal backPressed()
 
     Background {
-      anchors.horizontalCenter: creditsScene.gameWindowAnchorItem.horizontalCenter
-      anchors.bottom: creditsScene.gameWindowAnchorItem.bottom
+        anchors.horizontalCenter: creditsScene.gameWindowAnchorItem.horizontalCenter
+        anchors.bottom: creditsScene.gameWindowAnchorItem.bottom
     }
 
     ImageButton {

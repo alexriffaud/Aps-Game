@@ -63,7 +63,7 @@ bool MainApplication::loginState() const
 
 void MainApplication::login(const QString &login, const QString &password)
 {
-    _databaseApplication.connect(login, password);
+    _databaseApplication.userDAO()->connect(login, password);
 }
 
 void MainApplication::signUp(const QString &login, const QString &mail, const QString &firstName, const QString &password,const QDate &birthdate)
@@ -78,7 +78,7 @@ void MainApplication::signUp(const QString &login, const QString &mail, const QS
     QJsonDocument doc(user);
     QByteArray bytes = doc.toJson();
 
-    _databaseApplication.signUp(bytes);
+    _databaseApplication.userDAO()->signUp(bytes);
 }
 
 void MainApplication::checkLogin(const QString &login)
@@ -90,7 +90,7 @@ void MainApplication::checkLogin(const QString &login)
     QJsonDocument doc(user);
     QByteArray bytes = doc.toJson();
 
-    _databaseApplication.checkLoginState(bytes);
+    _databaseApplication.userDAO()->checkLoginState(bytes);
 }
 
 void MainApplication::changeAccount(const QString &login, const QString &mail, const QString &firstName, const QString &password)
@@ -134,7 +134,17 @@ void MainApplication::changeAccount(const QString &login, const QString &mail, c
     QJsonDocument doc(user);
     QByteArray bytes = doc.toJson();
 
-    _databaseApplication.changeAccount(bytes);
+    _databaseApplication.userDAO()->changeAccount(bytes);
+}
+
+void MainApplication::getGlobalScore()
+{
+    _databaseApplication.scoreDAO()->getGlobalScore();
+}
+
+void MainApplication::getPersonalScore()
+{
+    _databaseApplication.scoreDAO()->getPersonalScore();
 }
 
 bool MainApplication::isConnected() const

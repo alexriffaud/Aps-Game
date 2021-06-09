@@ -42,7 +42,11 @@ SOURCES += src/main.cpp \
     src/DatabaseApplication.cpp \
     src/MainApplication.cpp \
     src/ModelApplication.cpp \
+    src/db/ScoreDAO.cpp \
+    src/db/UserDAO.cpp \
+    src/obj/Score.cpp \
     src/obj/User.cpp \
+    src/tools/ScoreList.cpp \
     src/tools/Tools.cpp
 
 
@@ -71,10 +75,14 @@ DISTFILES += \
     qml/common/Ground.qml \
     qml/common/SceneBase.qml \
     qml/entities/BorderElement.qml \
-    qml/entities/Pipes.qml \
+    qml/entities/Platform.qml \
     qml/entities/Player.qml \
+    qml/entities/ResetSensor.qml \
+    qml/entities/Tile.qml \
+    qml/entities/TileEntityBase.qml \
     qml/game/GameOverScreen.qml \
     qml/game/Level.qml \
+    qml/game/LevelBase.qml \
     qml/game/Numbers.qml \
     qml/game/WaitScreen.qml \
     qml/scenes/AccountScene.qml \
@@ -86,6 +94,7 @@ DISTFILES += \
     qml/scenes/InputLine.qml \
     qml/scenes/Menu.qml \
     qml/scenes/MenuScene.qml \
+    qml/scenes/Scores.qml \
     qml/scenes/ScoresScene.qml \
     qml/scenes/SettingsScene.qml \
     qml/scenes/SignUpScene.qml \
@@ -95,14 +104,18 @@ HEADERS += \
     inc/DatabaseApplication.h \
     inc/MainApplication.h \
     inc/ModelApplication.h \
+    inc/db/ScoreDAO.h \
+    inc/db/UserDAO.h \
+    inc/obj/Score.h \
     inc/obj/User.h \
     inc/tools/Enums.h \
+    inc/tools/ScoreList.h \
     inc/tools/Tools.h
 
 INCLUDEPATH += \
     inc/obj/ \
     inc/tools/ \
     src/tools/ \
-    inc/database/ \
+    inc/db/ \
     inc/ \
     src/

@@ -4,7 +4,6 @@ import "../common"
 import "../entities"
 
 Scene {
-
     id: settingsScene
     signal backPressed()
     signal okPressed()
@@ -18,8 +17,8 @@ Scene {
 
     Background
     {
-      anchors.horizontalCenter: settingsScene.gameWindowAnchorItem.horizontalCenter
-      anchors.bottom: settingsScene.gameWindowAnchorItem.bottom
+        anchors.horizontalCenter: settingsScene.gameWindowAnchorItem.horizontalCenter
+        anchors.bottom: settingsScene.gameWindowAnchorItem.bottom
     }
 
     ImageButton

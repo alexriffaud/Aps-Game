@@ -1,32 +1,43 @@
-import Felgo 3.0
 import QtQuick 2.0
+import Felgo 3.0
 
-Item {
-  width: spriteSequence.width
-  height: spriteSequence.height
+import "../entities"
 
-  SpriteSequence {
-    id: spriteSequence
-    anchors.centerIn: parent
+TileEntityBase {
+    id: ground
+    entityType: "ground"
 
-    Sprite {
-      name: "running"
+    size: 2
 
-      frameCount: 3
-      frameRate: 4
-
-      frameWidth: 368
-      frameHeight: 90
-      source: "../../assets/img/landSprite.png"
-
+    Row {
+        id: tileRow
+        Tile {
+            pos: "left"
+            image: "../../assets/img/ground/left.png"
+        }
+        Repeater {
+            model: size-2
+            Tile {
+                pos: "mid"
+                image: "../../assets/img/ground/mid.png"
+            }
+        }
+        Tile {
+            pos: "right"
+            image: "../../assets/img/ground/right.png"
+        }
     }
-  }
 
-  function reset() {
-    spriteSequence.running = true
-  }
-
-  function stop() {
-    spriteSequence.running = false
-  }
+    BoxCollider {
+        anchors.fill: parent
+        bodyType: Body.Static
+        fixture.onBeginContact: {
+            var otherEntity = other.getBody().target
+            if(otherEntity.entityType === "player") player.contacts++
+        }
+        fixture.onEndContact: {
+            var otherEntity = other.getBody().target
+            if(otherEntity.entityType === "player") player.contacts--
+        }
+    }
 }

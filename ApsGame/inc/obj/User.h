@@ -4,6 +4,10 @@
 #include <QObject>
 #include <QDate>
 #include <QString>
+#include <QList>
+
+#include "Score.h"
+#include "ScoreList.h"
 
 class User : public QObject
 {
@@ -35,6 +39,8 @@ public:
     Q_INVOKABLE QDate birthdate() const;
     void setBirthdate(const QDate &birthdate);
 
+    ScoreList *personalScoreList();
+
 private:
     int     _ID;
     QString _login;
@@ -43,5 +49,6 @@ private:
     QString _mail;
     QString _password;
     QDate _birthdate;
+    ScoreList _personalScoreList;
 };
 #endif // USER_H

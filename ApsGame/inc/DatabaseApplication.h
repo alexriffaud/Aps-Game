@@ -9,6 +9,8 @@
 #include "ModelApplication.h"
 #include "Enums.h"
 #include "Tools.h"
+#include "ScoreDAO.h"
+#include "UserDAO.h"
 
 class DatabaseApplication : public QObject
 {
@@ -17,17 +19,8 @@ public:
     DatabaseApplication(ModelApplication *modelApplication);
     ~DatabaseApplication();
 
-    void connect(QString name, QString password);
-    bool parseConnect(QNetworkReply *reply);
-
-    void signUp(QByteArray bytes);
-    bool parseSignUp(QNetworkReply *reply);
-
-    void checkLoginState(QByteArray bytes);
-    bool parseLoginState(QNetworkReply *reply);
-
-    void changeAccount(QByteArray bytes);
-    bool parseChangeAccount(QNetworkReply *reply);
+    UserDAO *userDAO();
+    ScoreDAO *scoreDAO();
 
 private slots:
     QVariant onResult(QNetworkReply *reply);
@@ -37,6 +30,8 @@ signals:
     void changeSignUpState(bool state);
     void changeCheckLoginState(bool state);
     void changeAccountState(bool state);
+    void changeGlobalScoreState(bool state);
+    void changePersonalScoreState(bool state);
 
 private:
     ModelApplication    *_modelApplication;
@@ -47,8 +42,6 @@ private:
     QString                 _address;
     Request                 _requestNum;
 
-    QString                 _username;
-    QString                 _password;
     QString                 _token;
 
     //Network
@@ -56,6 +49,10 @@ private:
 
     bool                    _connectionState;
     bool                    _firstRequest;
+
+    //DAOs
+    UserDAO                 _userDAO;
+    ScoreDAO                _scoreDAO;
 };
 
 #endif // DATABASEAPPLICATION_H

@@ -3,9 +3,11 @@
 DatabaseApplication::DatabaseApplication(ModelApplication *modelApplication) :
     _modelApplication(modelApplication),
     _manager(),
-    _address("https://127.0.0.1:8080"),
+    _address("https://127.0.0.1:8080/api/v1/apsgame"),
     _token(""),
-    _connectionState(false)
+    _connectionState(false),
+    _userDAO(modelApplication, &_manager, _address),
+    _scoreDAO(modelApplication, &_manager, _address)
 {
     QObject::connect(&_manager, SIGNAL(finished(QNetworkReply*)), this, SLOT(onResult(QNetworkReply*)));
     _firstRequest = true;
@@ -16,260 +18,66 @@ DatabaseApplication::~DatabaseApplication()
     _manager.deleteLater();
 }
 
-void DatabaseApplication::connect(QString name, QString password)
-{
-    _requestNum = Request::CONNECT;
-    _username = name;
-    _password = password;
-
-    _request.setUrl(QUrl(_address + "/api/v1/daproject/login"));
-    _request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
-
-    Tools::setSSLConfiguration(&_request);
-
-    QJsonObject recordObject;
-    recordObject.insert("login", QJsonValue::fromVariant(name));
-    recordObject.insert("password", QJsonValue::fromVariant(password));
-
-    QJsonDocument doc(recordObject);
-    QByteArray bytes = doc.toJson();
-
-    _manager.post(_request, bytes);
-}
-
-bool DatabaseApplication::parseConnect(QNetworkReply *reply)
-{
-    qDebug() << "DatabaseApplication::connectParser";
-
-    bool result = false;
-
-    int statusCode = Tools::parseStatus(reply);
-
-    QString data = reply->readAll();
-
-    if(statusCode == 302)
-    {
-        result = Tools::redirection(reply, _requestNum, &_manager);
-    }
-    else if((statusCode == 403) || (statusCode == 404)|| (statusCode == 500))
-    {
-        result = Tools::showError(reply);
-    }
-    else if(data.size() > 1)
-    {
-        _token = data.split(";")[0];
-
-        //Set token and requestNum in DAOs here
-        _modelApplication->user()->setLogin(_username);
-        _modelApplication->user()->setPassword(_password);
-        _modelApplication->user()->setFirstname(data.split(";")[2]);
-        _modelApplication->user()->setMail(data.split(";")[3]);
-        QString dateString = data.split(";")[4].split("T")[0];
-        QDate date = QDate(dateString.split("-")[0].toInt(),dateString.split("-")[1].toInt(),dateString.split("-")[2].toInt());
-        _modelApplication->user()->setBirthdate(date);
-        _modelApplication->user()->setID(data.split(";")[1].toInt());
-        result = true;
-    }
-    else
-    {
-        result = false;
-    }
-
-    reply->deleteLater();
-
-    return result;
-}
-
-void DatabaseApplication::signUp(QByteArray bytes)
-{
-    qDebug() << "DatabaseApplication::signUp " << bytes;
-    _requestNum = Request::SIGNUP;
-
-    QUrl url(_address + "/api/v1/daproject/signup");
-    QNetworkRequest request(url);
-
-    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
-    Tools::setSSLConfiguration(&request);
-
-    QNetworkAccessManager *manager = new QNetworkAccessManager(this);
-
-    QObject::connect(manager, SIGNAL(finished(QNetworkReply*)),
-                     this, SLOT(onResult(QNetworkReply*)));
-
-    manager->post(request, bytes);
-}
-
-bool DatabaseApplication::parseSignUp(QNetworkReply *reply)
-{
-    bool result = false;
-
-    int statusCode = Tools::parseStatus(reply);
-
-    QString data = reply->readAll();
-
-    if(statusCode == 302)
-    {
-        result = Tools::redirection(reply, _requestNum, &_manager);
-    }
-    else if((statusCode == 403) || (statusCode == 404)|| (statusCode == 500))
-    {
-        result = Tools::showError(reply);
-    }
-    else if(statusCode == 201)
-    {
-        result = true;
-    }
-    else
-    {
-        result = false;
-    }
-
-    reply->deleteLater();
-
-    return result;
-}
-
-void DatabaseApplication::checkLoginState(QByteArray bytes)
-{
-    qDebug() << "DatabaseApplication::checkLoginState " << bytes;
-    _requestNum = Request::LOGIN_STATE;
-
-    QUrl url(_address + "/api/v1/daproject/checklogin");
-    QNetworkRequest request(url);
-    qDebug() << _token;
-    const QByteArray basic_authorization = _token.toUtf8();
-
-    request.setRawHeader(QByteArrayLiteral("Authorization"), "Bearer "+basic_authorization);
-
-    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
-    Tools::setSSLConfiguration(&request);
-
-    QNetworkAccessManager *manager = new QNetworkAccessManager(this);
-
-    QObject::connect(manager, SIGNAL(finished(QNetworkReply*)),
-                     this, SLOT(onResult(QNetworkReply*)));
-
-    manager->post(request, bytes);
-}
-
-bool DatabaseApplication::parseLoginState(QNetworkReply *reply)
-{
-    bool result = false;
-
-    int statusCode = Tools::parseStatus(reply);
-
-    QString data = reply->readAll();
-
-    if(statusCode == 302)
-    {
-        result = false;
-    }
-    else if((statusCode == 403) || (statusCode == 404)|| (statusCode == 500))
-    {
-        result = Tools::showError(reply);
-    }
-    else if(statusCode == 200)
-    {
-        result = true;
-    }
-    else
-    {
-        result = false;
-    }
-
-    reply->deleteLater();
-
-    return result;
-}
-
-void DatabaseApplication::changeAccount(QByteArray bytes)
-{
-    qDebug() << "DatabaseApplication::changeAccount " << bytes;
-    _requestNum = Request::CHANGE_ACCOUNT;
-
-    QUrl url(_address + "/api/v1/daproject/updateAccount");
-    QNetworkRequest request(url);
-    const QByteArray basic_authorization = _token.toUtf8();
-
-    request.setRawHeader(QByteArrayLiteral("Authorization"), "Bearer "+basic_authorization);
-
-    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
-    Tools::setSSLConfiguration(&request);
-
-    QNetworkAccessManager *manager = new QNetworkAccessManager(this);
-
-    QObject::connect(manager, SIGNAL(finished(QNetworkReply*)),
-                     this, SLOT(onResult(QNetworkReply*)));
-
-    manager->put(request, bytes);
-}
-
-bool DatabaseApplication::parseChangeAccount(QNetworkReply *reply)
-{
-    bool result = false;
-
-    int statusCode = Tools::parseStatus(reply);
-
-    QString data = reply->readAll();
-
-    if(statusCode == 302)
-    {
-        result = false;
-    }
-    else if((statusCode == 403) || (statusCode == 404)|| (statusCode == 500))
-    {
-        result = Tools::showError(reply);
-    }
-    else if(statusCode == 200)
-    {
-        result = true;
-    }
-    else
-    {
-        result = false;
-    }
-
-    reply->deleteLater();
-
-    return result;
-}
-
 QVariant DatabaseApplication::onResult(QNetworkReply *reply)
 {
     QVariant result;
 
-        //Check request
-        switch(_requestNum)
-        {
-            case Request::CONNECT:
-            {
-                result = parseConnect(reply);
-                emit changeLoginState(result.toBool());
-                break;
-            }
-            case Request::SIGNUP:
-            {
-                result = parseSignUp(reply);
-                emit changeSignUpState(result.toBool());
-                break;
-            }
-            case Request::LOGIN_STATE:
-            {
-                result = parseLoginState(reply);
-                emit changeCheckLoginState(result.toBool());
-                break;
-            }
-        case Request::CHANGE_ACCOUNT:
-        {
-            result = parseChangeAccount(reply);
-            emit changeAccountState(result.toBool());
-            break;
-        }
-            default:
-            {
-                break;
-            }
-        }
+    //Check request
+    switch(_requestNum)
+    {
+    case Request::CONNECT:
+    {
+        result = _userDAO.parseConnect(reply);
+        _token = _userDAO.token();
+        _scoreDAO.setToken(_token);
+        emit changeLoginState(result.toBool());
+        break;
+    }
+    case Request::SIGNUP:
+    {
+        result = _userDAO.parseSignUp(reply);
+        emit changeSignUpState(result.toBool());
+        break;
+    }
+    case Request::LOGIN_STATE:
+    {
+        result = _userDAO.parseLoginState(reply);
+        emit changeCheckLoginState(result.toBool());
+        break;
+    }
+    case Request::CHANGE_ACCOUNT:
+    {
+        result = _userDAO.parseChangeAccount(reply);
+        emit changeAccountState(result.toBool());
+        break;
+    }
+    case Request::GLOBAL_SCORE:
+    {
+        result = _scoreDAO.parseGlobalScore(reply);
+        emit changeGlobalScoreState(result.toBool());
+        break;
+    }
+    case Request::PERSONAL_SCORE:
+    {
+        result = _scoreDAO.parsePersonalScore(reply);
+        emit changePersonalScoreState(result.toBool());
+        break;
+    }
+    default:
+    {
+        break;
+    }
+    }
 
-        return result;
+    return result;
+}
+
+ScoreDAO *DatabaseApplication::scoreDAO()
+{
+    return &_scoreDAO;
+}
+
+UserDAO *DatabaseApplication::userDAO()
+{
+    return &_userDAO;
 }

@@ -9,20 +9,20 @@ Scene {
     signal backPressed()
 
     Background {
-      anchors.horizontalCenter: scoresScene.gameWindowAnchorItem.horizontalCenter
-      anchors.bottom: scoresScene.gameWindowAnchorItem.bottom
+        anchors.horizontalCenter: scoresScene.gameWindowAnchorItem.horizontalCenter
+        anchors.bottom: scoresScene.gameWindowAnchorItem.bottom
     }
 
+
     ImageButton {
-        id: creditsTitle
+        id: scoresTitle
         anchors.horizontalCenter: parent.horizontalCenter
-        onClicked: {
-            backPressed()
-        }
         source: "../../assets/img/score-title.png"
     }
 
-
+    Scores {
+        anchors.top: scoresTitle.bottom
+    }
 
     ImageButton {
         id: backButton

@@ -164,7 +164,7 @@ Item {
                 {
                     mainItem.state = "menu"
 
-//                    messageDialog.show(qsTr("Your account has been update"))
+                    messageDialog.show(qsTr("Your account has been update"))
                     accountScene.inputLogin.textEdit.text = currentUser.login();
                     accountScene.inputFirstName.textEdit.text = currentUser.firstname();
                     accountScene.inputMail.textEdit.text = currentUser.mail();

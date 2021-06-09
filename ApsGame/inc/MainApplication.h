@@ -26,6 +26,8 @@ public:
     Q_INVOKABLE void signUp(const QString &login, const QString &mail, const QString &firstName, const QString &password, const QDate &birthdate);
     Q_INVOKABLE void checkLogin(const QString &login);
     Q_INVOKABLE void changeAccount(const QString &login, const QString &mail, const QString &firstName, const QString &password);
+    Q_INVOKABLE void getGlobalScore();
+    Q_INVOKABLE void getPersonalScore();
 
     Q_INVOKABLE bool isConnected() const;
     Q_INVOKABLE bool isSignUp() const;

@@ -17,8 +17,8 @@ Scene {
     property alias datePicker: datePicker
 
     Background {
-      anchors.horizontalCenter: signupScene.gameWindowAnchorItem.horizontalCenter
-      anchors.bottom: signupScene.gameWindowAnchorItem.bottom
+        anchors.horizontalCenter: signupScene.gameWindowAnchorItem.horizontalCenter
+        anchors.bottom: signupScene.gameWindowAnchorItem.bottom
     }
 
     ImageButton {
@@ -82,10 +82,10 @@ Scene {
         }
 
         DatePicker {
-          id: datePicker
-          anchors.horizontalCenter: parent.horizontalCenter
-          width: inputFirstName.width
-          datePickerMode: dateMode
+            id: datePicker
+            anchors.horizontalCenter: parent.horizontalCenter
+            width: inputFirstName.width
+            datePickerMode: dateMode
         }
         Row {
             ImageButton {
