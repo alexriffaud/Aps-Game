@@ -27,7 +27,7 @@ Scene {
         onClicked: {
             backPressed()
         }
-        source: "../../assets/img/sign-up-title.png"
+        source: Language.signUpTitlePath
     }
 
     Column {
@@ -39,46 +39,46 @@ Scene {
         InputLine
         {
             id: inputLogin
-            text.text: "Login"
+            text.text: Language.login
             text.width: dp(100)
             anchors.horizontalCenter: parent.horizontalCenter
-            textEdit.placeholderText: "Login"
+            textEdit.placeholderText: Language.login
         }
 
         InputLine
         {
             id: inputMail
-            text.text: "Mail"
+            text.text: Language.mail
             text.width: dp(100)
             anchors.horizontalCenter: parent.horizontalCenter
-            textEdit.placeholderText: "Mail"
+            textEdit.placeholderText: Language.mail
         }
         InputLine
         {
             id: inputFirstName
-            text.text: "FirstName"
+            text.text: Language.firstname
             text.width: dp(100)
             anchors.horizontalCenter: parent.horizontalCenter
-            textEdit.placeholderText: "First name"
+            textEdit.placeholderText: Language.firstname
         }
 
         InputLine
         {
             id: inputPassword
-            text.text: "Password"
+            text.text: Language.password
             text.width: dp(100)
             anchors.horizontalCenter: parent.horizontalCenter
             textEdit.echoMode: TextInput.Password
-            textEdit.placeholderText: "Password"
+            textEdit.placeholderText: Language.password
         }
 
         AppText {
             id: name
             anchors.horizontalCenter: parent.horizontalCenter
-            text: "Birth date"
-            color:  "#FFFFFF"
-            fontSize: 25
-            font.family: "Helvetica"
+            text: Language.birthdate
+            color:  Style.whiteColor
+            fontSize: Style.textSize1
+            font.family: Style.customFont
         }
 
         DatePicker {
@@ -93,14 +93,14 @@ Scene {
                 onClicked: {
                     okPressed()
                 }
-                source: "../../assets/img/ok.png"
+                source: Language.okPath
             }
             ImageButton {
                 id: backButton
                 onClicked: {
                     backPressed()
                 }
-                source: "../../assets/img/back.png"
+                source: Language.backPath
             }
         }
     }

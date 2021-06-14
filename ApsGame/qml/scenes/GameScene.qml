@@ -7,9 +7,6 @@ import "../entities"
 SceneBase {
     opacity: 0
     id: gameScene
-    // the "logical size" - the scene content is auto-scaled to match the GameWindow size
-    width: 480
-    height: 320
     gridSize: 32
 
     property int offsetBeforeScrollingStarts: 240
@@ -23,16 +20,19 @@ SceneBase {
 
     EntityManager {
         id: entityManager
+        entityContainer: gameScene
+
     }
 
-    // the whole screen is filled with an incredibly beautiful blue ...
-    Background {
-        anchors.fill: parent
+    MultiResolutionImage {
+         height: Screen.desktopAvailableHeight
+         width: Screen.desktopAvailableWidth
+        id: bg
+        source: "../../assets/img/bg.png"
     }
 
-    // ... followed by 2 parallax layers with trees and grass
     ParallaxScrollingBackground {
-        sourceImage: "../assets/img/background/layer2.png"
+        sourceImage: "../../assets/img/background/layer2.png"
         anchors.bottom: gameScene.gameWindowAnchorItem.bottom
         anchors.horizontalCenter: gameScene.gameWindowAnchorItem.horizontalCenter
         // we move the parallax layers at the same speed as the player
@@ -41,14 +41,13 @@ SceneBase {
         ratio: Qt.point(0.3,0)
     }
     ParallaxScrollingBackground {
-        sourceImage: "../assets/img/background/layer1.png"
+        sourceImage: "../../assets/img/background/layer1.png"
         anchors.bottom: gameScene.gameWindowAnchorItem.bottom
         anchors.horizontalCenter: gameScene.gameWindowAnchorItem.horizontalCenter
         movementVelocity: player.x > offsetBeforeScrollingStarts ? Qt.point(-player.horizontalVelocity,0) : Qt.point(0,0)
         ratio: Qt.point(0.6,0)
     }
 
-    // this is the moving item containing the level and player
     Item {
         id: viewPort
         height: level.height
@@ -63,19 +62,15 @@ SceneBase {
             z: 1000
 
             onPreSolve: {
-                //this is called before the Box2DWorld handles contact events
                 var entityA = contact.fixtureA.getBody().target
                 var entityB = contact.fixtureB.getBody().target
                 if(entityB.entityType === "platform" && entityA.entityType === "player" &&
                         entityA.y + entityA.height > entityB.y) {
-                    //by setting enabled to false, they can be filtered out completely
-                    //-> disable cloud platform collisions when the player is below the platform
                     contact.enabled = false
                 }
             }
         }
 
-        // you could load your levels Dynamically with a Loader component here
         Level {
             id: level
         }
@@ -91,7 +86,7 @@ SceneBase {
             height: 10
             x: player.x
             anchors.bottom: viewPort.bottom
-            // if the player collides with the reset sensor, he goes back to the start
+
             onContact: {
                 player.x = 20
                 player.y = 100
@@ -102,12 +97,11 @@ SceneBase {
                 audioManager.play(audioManager.idDIE)
                 audioManager.play(audioManager.idHIT)
             }
-            // this is just for you to see how the sensor moves, in your real game, you should position it lower, outside of the visible area
-            Rectangle {
-                anchors.fill: parent
-                color: "yellow"
-                opacity: 0.5
-            }
+//            Rectangle {
+//                anchors.fill: parent
+//                color: Style.yellowColor
+//                opacity: 0.5
+//            }
         }
     }
 
@@ -122,21 +116,21 @@ SceneBase {
 
     Rectangle {
         id: moveControl
-        // you should hide those input controls on desktops, not only because they are really ugly in this demo, but because you can move the player with the arrow keys there
-        //visible: !system.desktopPlatform
-        //enabled: visible
+
+        visible: !system.desktopPlatform
+        enabled: visible
         anchors.right: parent.right
         anchors.bottom: parent.bottom
         height: 50
         width: 150
-        color: "blue"
-        opacity: 0.4
+        color: Style.whiteColor
+        opacity: 0.2
 
         Rectangle {
             anchors.centerIn: parent
             width: 1
             height: parent.height
-            color: "white"
+            color: Style.whiteColor
         }
         MultiPointTouchArea {
             anchors.fill: parent
@@ -158,20 +152,19 @@ SceneBase {
 
     Rectangle {
         id: jumpControl
-        // same as the above input control
-        //visible: !system.desktopPlatform
-        //enabled: visible
+        visible: !system.desktopPlatform
+        enabled: visible
         anchors.left: parent.left
         anchors.bottom: parent.bottom
         height: 100
         width: 100
-        color: "green"
-        opacity: 0.4
+        color: Style.whiteColor
+        opacity: 0.2
 
         Text {
             anchors.centerIn: parent
             text: "jump"
-            color: "white"
+            color: Style.whiteColor
             font.pixelSize: 9
         }
         MouseArea {
@@ -180,33 +173,92 @@ SceneBase {
         }
     }
 
-    // on desktops, you can move the player with the arrow keys, on mobiles we are using our custom inputs above to modify the controller axis values. With this approach, we only need one actual logic for the movement, always referring to the axis values of the controller
+    Rectangle {
+        id: fireControl
+        visible: !system.desktopPlatform
+        enabled: visible
+        anchors.left: jumpControl.left
+        anchors.bottom: jumpControl.top
+        height: 100
+        width: 100
+        color: Style.whiteColor
+        opacity: 0.2
+
+        Text {
+            anchors.centerIn: parent
+            text: "fire"
+            color: Style.whiteColor
+            font.pixelSize: 9
+        }
+        MouseArea {
+            anchors.fill: parent
+            onPressed: player.shoot()
+        }
+    }
+
     Keys.forwardTo: controller
     TwoAxisController {
         id: controller
         onInputActionPressed: {
-            console.debug("key pressed actionName " + actionName)
+
             if(actionName == "up") {
                 player.jump()
+            }
+            if(actionName == "fire") {
+                player.shoot()
+                // saves the last time a bullet was fired
+                var lastTime = 0
+
+                // calculate the time between the current tap and the last time a bullet was fired
+                var currentTime = new Date().getTime()
+                var timeDiff = currentTime - lastTime
+
+                // if enough time has passed, create a new bullet
+
+                lastTime = currentTime
+
+                // TODO : play either the icicle or snowball sound depending on the current bullet type
+
+
+                // pick a bullet speed depending on the current powerup
+                var speed = 140
+
+                // pick the calculation of the tankBody and add 90 because of the rotated image
+                //            var rotation = tank.tankBody.rotation + 90
+
+                // calculate a bullet movement vector with the rotation and the speed
+                var xDirection = Math.cos(0 * Math.PI / 180.0) * speed
+                var yDirection = Math.sin(0 * Math.PI / 180.0) * speed
+
+                // calculate the bullet spawn point: start at the center of the tank translate it outside of the body towards the final direction
+                var startX = player.x + player.width / 2 + 5
+                var startY = player.y + player.height + 135
+
+                // create and remove bullet entities at runtime
+                entityManager.createEntityFromUrlWithProperties(Qt.resolvedUrl("../entities/Bullet.qml"), {
+                                                                    "start" : Qt.point(startX, startY),
+                                                                    "velocity" : Qt.point(xDirection, yDirection),
+                                                                    "rotation" :  0,
+                                                                    "bulletType" : 0});
             }
         }
     }
 
 
     // displaying the score
-    Numbers {
-        anchors.horizontalCenter: parent.horizontalCenter
-        y: 30
-        number: score
-    }
+//    Numbers {
+//        anchors.horizontalCenter: parent.horizontalCenter
+//        y: 30
+//        number: score
+//    }
 
-    // overlay on game over
     GameOverScreen {
         id: gameOverStats
 
         onPlayPressed: gameScene.state = "wait"
-        onNetworkPressed: parent.networkPressed()
-        onUseCoinsPressed: parent.useCoinsPressed()
+        onMenuPressed: parent.menuPressed()
+//        onNetworkPressed: parent.networkPressed()
+//        onUseCoinsPressed: parent.useCoinsPressed()
     }
 
     onBackButtonPressed: {
@@ -241,9 +293,7 @@ SceneBase {
 
     function gameOver() {
         stopGame()
-        // do not submit a score of 0
         if(score > 0) {
-            // submit the new score; if there is a new highscore, a signal onNewHighscore() is emitted by FelgoGameNetwork
 //            gameNetwork.reportScore(score)
         }
     }

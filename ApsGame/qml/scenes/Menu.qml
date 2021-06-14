@@ -1,6 +1,8 @@
 import Felgo 3.0
 import QtQuick 2.0
 
+import "../common"
+
 Column {
     signal playPressed()
     signal accountPressed()
@@ -16,27 +18,27 @@ Column {
         onClicked: {
             playPressed()
         }
-        source: "../../assets/img/playAgain.png"
+        source: Language.playAgainPath
     }
 
     ImageButton {
         onClicked: {
             scoresPressed()
         }
-        source: "../../assets/img/scores.png"
+        source: Language.scoresPath
     }
 
     ImageButton {
         onClicked: {
             accountPressed()
         }
-        source: "../../assets/img/account.png"
+        source: Language.accountPath
     }
 
     ImageButton {
         onClicked: {
             creditsPressed()
         }
-        source: "../../assets/img/credits.png"
+        source: Language.creditsPath
     }
 }

@@ -1,0 +1,3 @@
+# qmldir
+singleton Language Language.qml
+singleton Stylr Style.qml

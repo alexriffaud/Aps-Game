@@ -1,7 +1,7 @@
 import QtQuick 2.0
 import Felgo 3.0
 
-// EMPTY SCENE
+import "../common"
 
 Column {
     id: scores
@@ -11,9 +11,9 @@ Column {
         AppText {
             id: chooseScoreTab
             text: "Personal scores"
-            color:  "#FFFFFF"
-            fontSize: 14
-            font.family: "Helvetica"
+            color:  Style.whiteColor
+            fontSize: Style.textSize2
+            font.family: Style.customFont
         }
 
         AppSwitch {
@@ -35,17 +35,17 @@ Column {
         delegate: Rectangle {
             height: 130
             width: parent.width
-            color: "transparent"
+            color: Style.transparentColor
             border.width: 2
-            border.color: "white"
+            border.color: Style.whiteColor
             Row {
                 Text {
                     text: '<b>Name:</b> ' + model.item.user + " : "
-                    color: "white"
+                    color: Style.whiteColor
                 }
                 Text {
                     text: model.item.score
-                    color: "white"
+                    color: Style.whiteColor
                 }
             }
         }

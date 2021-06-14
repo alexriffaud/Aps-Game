@@ -29,7 +29,7 @@ Scene {
         {
             backPressed()
         }
-        source: "../../assets/img/account-title.png"
+        source: Language.accountTitlePath
     }
 
     Column
@@ -42,13 +42,12 @@ Scene {
         InputLine
         {
             id: inputLogin
-            text.text: "Login"
+            text.text: Language.login
             text.width: dp(100)
             anchors.horizontalCenter: parent.horizontalCenter
-            textEdit.placeholderText: "Login"
+            textEdit.placeholderText: Language.login
             textEdit.onEditingFinished:
             {
-                console.log("text changed")
                 loginChanged()
             }
         }
@@ -58,42 +57,46 @@ Scene {
             id: message
             opacity: 0
             anchors.horizontalCenter: parent.horizontalCenter
-            text: "Your login is already in use."
-            color:  "#ff2929"
-            fontSize: 14
-            font.family: "Helvetica"
+            text: Language.loginUsed
+            color:  Style.redColor
+            fontSize: Style.textSize2
+            font.family: Style.customFont
         }
 
         InputLine
         {
             id: inputMail
-            text.text: "Mail"
+            text.text: Language.mail
             text.width: dp(100)
             anchors.horizontalCenter: parent.horizontalCenter
-            textEdit.placeholderText: "Mail"
+            textEdit.placeholderText: Language.mail
         }
 
         InputLine
         {
             id: inputFirstName
-            text.text: "FirstName"
+            text.text: Language.firstname
             text.width: dp(100)
             anchors.horizontalCenter: parent.horizontalCenter
-            textEdit.placeholderText: "First name"
+            textEdit.placeholderText: Language.firstname
         }
 
         InputLine
         {
             id: inputPassword
-            text.text: "Password"
+            text.text: Language.password
             text.width: dp(100)
             anchors.horizontalCenter: parent.horizontalCenter
             textEdit.echoMode: TextInput.Password
-            textEdit.placeholderText: "Password"
+            textEdit.placeholderText: Language.password
         }
 
         Row
         {
+            anchors{
+                horizontalCenter: parent.horizontalCenter
+            }
+            spacing: 10
             ImageButton
             {
                 id: okButton
@@ -101,7 +104,7 @@ Scene {
                 {
                     okPressed()
                 }
-                source: "../../assets/img/ok.png"
+                source: Language.okPath
             }
             ImageButton
             {
@@ -110,8 +113,24 @@ Scene {
                 {
                     backPressed()
                 }
-                source: "../../assets/img/back.png"
+                source: Language.backPath
             }
+        }
+
+        ImageButton {
+            onClicked: {
+                if(languageState === 0)
+                {
+                    Language.isFrench();
+                    languageState = 1;
+                }
+                else
+                {
+                    Language.isEnglish();
+                    languageState = 0;
+                }
+            }
+            source: Language.languagePath
         }
     }
 }

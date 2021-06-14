@@ -20,7 +20,7 @@ class ScoreDAO : public QObject
 {
     Q_OBJECT
 public:
-    ScoreDAO(ModelApplication *modelApplication, QNetworkAccessManager *manager, QString &address);
+    ScoreDAO(ModelApplication *modelApplication, QNetworkAccessManager *manager, QString &address, Request *request);
 
     void getGlobalScore();
     bool parseGlobalScore(QNetworkReply *reply);

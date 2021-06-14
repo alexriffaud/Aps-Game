@@ -20,7 +20,7 @@ class UserDAO : public QObject
 {
     Q_OBJECT
 public:
-    UserDAO(ModelApplication *modelApplication, QNetworkAccessManager *manager, QString &address);
+    UserDAO(ModelApplication *modelApplication, QNetworkAccessManager *manager, QString &address, Request *request);
 
     void changeAccount(QByteArray bytes);
     bool parseChangeAccount(QNetworkReply *reply);

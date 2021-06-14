@@ -63,6 +63,7 @@ bool MainApplication::loginState() const
 
 void MainApplication::login(const QString &login, const QString &password)
 {
+    qDebug() << "MainApplication::login";
     _databaseApplication.userDAO()->connect(login, password);
 }
 

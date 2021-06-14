@@ -1,15 +1,17 @@
 #include "../../inc/db/UserDAO.h"
 
-UserDAO::UserDAO(ModelApplication *modelApplication, QNetworkAccessManager *manager, QString &address) :
+UserDAO::UserDAO(ModelApplication *modelApplication, QNetworkAccessManager *manager, QString &address, Request *request) :
     _modelApplication(modelApplication),
     _manager(manager),
-    _address(address)
+    _address(address),
+    _requestNum(request)
 {
 
 }
 
 void UserDAO::connect(QString name, QString password)
 {
+    qDebug() << "UserDAO::connect "+ _address + "/login";
     *_requestNum = Request::CONNECT;
     _username = name;
     _password = password;
@@ -31,7 +33,7 @@ void UserDAO::connect(QString name, QString password)
 
 bool UserDAO::parseConnect(QNetworkReply *reply)
 {
-    qDebug() << "DatabaseApplication::connectParser";
+    qDebug() << "UserDAO::connectParser";
 
     bool result = false;
 
@@ -74,7 +76,7 @@ bool UserDAO::parseConnect(QNetworkReply *reply)
 
 void UserDAO::signUp(QByteArray bytes)
 {
-    qDebug() << "DatabaseApplication::signUp " << bytes;
+    qDebug() << "UserDAO::signUp " << bytes;
     *_requestNum = Request::SIGNUP;
 
     QUrl url(_address + "/signup");
@@ -123,7 +125,7 @@ bool UserDAO::parseSignUp(QNetworkReply *reply)
 
 void UserDAO::checkLoginState(QByteArray bytes)
 {
-    qDebug() << "DatabaseApplication::checkLoginState " << bytes;
+    qDebug() << "UserDAO::checkLoginState " << bytes;
     *_requestNum = Request::LOGIN_STATE;
 
     QUrl url(_address + "/checklogin");
@@ -176,7 +178,7 @@ bool UserDAO::parseLoginState(QNetworkReply *reply)
 
 void UserDAO::changeAccount(QByteArray bytes)
 {
-    qDebug() << "DatabaseApplication::changeAccount " << bytes;
+    qDebug() << "UserDAO::changeAccount " << bytes;
     *_requestNum = Request::CHANGE_ACCOUNT;
 
     QUrl url(_address + "/updateAccount");
@@ -234,4 +236,9 @@ void UserDAO::setToken(const QString &token)
 void UserDAO::setRequestNum(Request *requestNum)
 {
     _requestNum = requestNum;
+}
+
+QString UserDAO::token() const
+{
+    return _token;
 }

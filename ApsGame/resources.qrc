@@ -2,5 +2,6 @@
     <qresource prefix="/">
         <file>assets</file>
         <file>qml</file>
+		<file>qml/common/qmldir</file>
     </qresource>
 </RCC>

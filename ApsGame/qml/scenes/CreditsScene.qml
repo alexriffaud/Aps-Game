@@ -19,18 +19,18 @@ Scene {
         onClicked: {
             backPressed()
         }
-        source: "../../assets/img/credits-title.png"
+        source: Language.credtisTitlePath
     }
 
     AppText {
         id: creditsText
         width: parent.width
         anchors.top: creditsTitle.bottom
-        text: "A video game or computer game is an electronic game that involves interaction with a user interface or input device – such as a joystick, controller, keyboard, or motion sensing device – to generate visual feedback. This feedback is shown on a video display device, such as a TV set, monitor, touchscreen, or virtual reality headset. Video games are often augmented with audio feedback delivered through speakers or headphones, and sometimes with other types of feedback, including haptic technology. "
+        text: Language.credits
         padding: dp(10)
-        color:  "#FFFFFF"
-        fontSize: 25
-        font.family: "Helvetica"
+        color:  Style.whiteColor
+        fontSize: Style.textSize1
+        font.family: Style.customFont
     }
 
     ImageButton {
@@ -40,7 +40,7 @@ Scene {
         onClicked: {
             backPressed()
         }
-        source: "../../assets/img/back.png"
+        source: Language.backPath
     }
 
 }

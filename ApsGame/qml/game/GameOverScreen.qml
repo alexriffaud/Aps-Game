@@ -12,54 +12,34 @@ Item {
     enabled: visible
 
     signal playPressed()
-    signal networkPressed()
-    signal useCoinsPressed()
+    signal menuPressed()
+
+
 
     MultiResolutionImage {
-        source: "../../assets/img/gameOver.png"
-        anchors.bottom: scoreBoard.top
+        id: image
+        source: Language.gameOverPath
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.bottomMargin: 30
     }
 
-    MultiResolutionImage {
-        id: scoreBoard
-        anchors.centerIn: parent
-        source: "../../assets/img/scoreBoard.png"
+    ImageButton {
+        id: menuItem
+        anchors.top: image.bottom
+        anchors.horizontalCenter: parent.horizontalCenter
+        onClicked: {
+            playPressed()
+        }
+        source: Language.playAgainPath
     }
 
-    Numbers {
-        anchors.right: scoreBoard.right
-        anchors.rightMargin: -10
-        anchors.top: scoreBoard.top
-        anchors.topMargin: 35
-        scale: 0.5
-        number: gameScene.score
-    }
-
-    Numbers {
-        anchors.right: scoreBoard.right
-        anchors.rightMargin: -10
-        anchors.top: scoreBoard.top
-        anchors.topMargin: 75
-        scale: 0.5
-        //    number: highscore
-    }
-
-    Numbers {
-        color: "_gold"
-        anchors.left: scoreBoard.left
-        anchors.leftMargin: 30
-        anchors.top: scoreBoard.top
-        anchors.topMargin: 50
-        number: coins
-    }
-
-    Menu {
-        anchors.top: scoreBoard.bottom
-        anchors.topMargin: 15
-        onPlayPressed: parent.playPressed()
-        //    onNetworkPressed: parent.networkPressed()
+    ImageButton {
+        anchors.top: menuItem.bottom
+        anchors.horizontalCenter: parent.horizontalCenter
+        onClicked: {
+            menuPressed()
+        }
+        source: Language.menuPath
     }
 
 }

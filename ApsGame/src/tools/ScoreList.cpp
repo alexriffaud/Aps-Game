@@ -32,6 +32,14 @@ void ScoreList::remove(QObject* item)
     }
 }
 
+void ScoreList::removeAll()
+{
+    while(_items.size() > 0 )
+    {
+        remove(_items.at(0));
+    }
+}
+
 QHash<int, QByteArray> ScoreList::roleNames() const
 {
     QHash<int, QByteArray> roles;

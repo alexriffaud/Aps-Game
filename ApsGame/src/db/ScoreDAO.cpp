@@ -1,9 +1,10 @@
 #include "../../inc/db/ScoreDAO.h"
 
-ScoreDAO::ScoreDAO(ModelApplication *modelApplication, QNetworkAccessManager *manager, QString &address) :
+ScoreDAO::ScoreDAO(ModelApplication *modelApplication, QNetworkAccessManager *manager, QString &address, Request *request) :
     _modelApplication(modelApplication),
     _manager(manager),
-    _address(address)
+    _address(address),
+    _requestNum(request)
 {
 
 }

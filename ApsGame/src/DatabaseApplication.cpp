@@ -6,8 +6,8 @@ DatabaseApplication::DatabaseApplication(ModelApplication *modelApplication) :
     _address("https://127.0.0.1:8080/api/v1/apsgame"),
     _token(""),
     _connectionState(false),
-    _userDAO(modelApplication, &_manager, _address),
-    _scoreDAO(modelApplication, &_manager, _address)
+    _userDAO(modelApplication, &_manager, _address, &_requestNum),
+    _scoreDAO(modelApplication, &_manager, _address, &_requestNum)
 {
     QObject::connect(&_manager, SIGNAL(finished(QNetworkReply*)), this, SLOT(onResult(QNetworkReply*)));
     _firstRequest = true;
@@ -20,6 +20,7 @@ DatabaseApplication::~DatabaseApplication()
 
 QVariant DatabaseApplication::onResult(QNetworkReply *reply)
 {
+    qDebug() << "DatabaseApplication::onResult:";
     QVariant result;
 
     //Check request
@@ -31,6 +32,7 @@ QVariant DatabaseApplication::onResult(QNetworkReply *reply)
         _token = _userDAO.token();
         _scoreDAO.setToken(_token);
         emit changeLoginState(result.toBool());
+        qDebug() << "Request::CONNECT:";
         break;
     }
     case Request::SIGNUP:

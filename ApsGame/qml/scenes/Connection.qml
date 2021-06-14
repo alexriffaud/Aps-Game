@@ -1,12 +1,18 @@
 import QtQuick 2.0
 import Felgo 3.0
 
+import "../common"
+
 Column {
     signal connectionPressed()
     signal signupPressed()
+    signal languagePressed()
 
     property alias inputLogin: inputLogin
     property alias inputPassword: inputPassword
+
+    //0 = english
+    property int languageState: 0
 
     spacing: 18
     anchors.horizontalCenter: parent.horizontalCenter
@@ -15,35 +21,58 @@ Column {
     InputLine
     {
         id: inputLogin
-        text.text: "Login"
-        text.width: dp(100)
-        textEdit.placeholderText: "Login"
+        text.text: Language.login
+        text.width: dp(130)
+        textEdit.placeholderText: Language.login
     }
 
     InputLine
     {
         id: inputPassword
-        text.width: dp(100)
-        text.text: "Password"
+        text.width: dp(130)
+        text.text: Language.password
         textEdit.echoMode: TextInput.Password
         anchors.horizontalCenter: parent.horizontalCenter
-        textEdit.placeholderText: "Password"
+        textEdit.placeholderText: Language.password
     }
 
-    ImageButton {
-        id: connectionItem
-        anchors.horizontalCenter: parent.horizontalCenter
-        onClicked: {
-            connectionPressed()
+    Row {
+        anchors{
+            horizontalCenter: parent.horizontalCenter
         }
-        source: "../../assets/img/connect.png"
+        spacing: 10
+        ImageButton {
+            id: connectionItem
+            onClicked: {
+                connectionPressed()
+            }
+            source: Language.connectPath
+        }
+
+        ImageButton {
+            onClicked: {
+                signupPressed()
+            }
+            source: Language.signUpPath
+        }
     }
+
+
 
     ImageButton {
         anchors.horizontalCenter: parent.horizontalCenter
         onClicked: {
-            signupPressed()
+            if(languageState === 0)
+            {
+                Language.isFrench();
+                languageState = 1;
+            }
+            else
+            {
+                Language.isEnglish();
+                languageState = 0;
+            }
         }
-        source: "../../assets/img/signup.png"
+        source: Language.languagePath
     }
 }

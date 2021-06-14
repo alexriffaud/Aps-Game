@@ -19,7 +19,7 @@ Scene {
         onClicked: {
             backPressed()
         }
-        source: "../../assets/img/settings-title.png"
+        source: Language.credtisTitlePath
     }
 
 
@@ -31,6 +31,6 @@ Scene {
         onClicked: {
             backPressed()
         }
-        source: "../../assets/img/back.png"
+        source: Language.backPath
     }
 }

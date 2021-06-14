@@ -17,7 +17,7 @@ Scene {
     ImageButton {
         id: scoresTitle
         anchors.horizontalCenter: parent.horizontalCenter
-        source: "../../assets/img/score-title.png"
+        source: Language.scoresTitlePath
     }
 
     Scores {
@@ -31,7 +31,7 @@ Scene {
         onClicked: {
             backPressed()
         }
-        source: "../../assets/img/back.png"
+        source: Language.backPath
     }
 
 }

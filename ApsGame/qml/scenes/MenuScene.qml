@@ -19,7 +19,7 @@ SceneBase {
     MultiResolutionImage {
         id: logo
         anchors.top: parent.top
-        anchors.topMargin: 60
+//        anchors.topMargin: 60
         anchors.horizontalCenter: scene.gameWindowAnchorItem.horizontalCenter
         source: "../../assets/img/logo.png"
     }

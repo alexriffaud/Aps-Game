@@ -73,11 +73,15 @@ DISTFILES += \
     qml/common/AudioManager.qml \
     qml/common/Background.qml \
     qml/common/Ground.qml \
+    qml/common/Language.qml \
     qml/common/SceneBase.qml \
+    qml/common/Style.qml \
     qml/entities/BorderElement.qml \
+    qml/entities/Bullet.qml \
     qml/entities/Platform.qml \
     qml/entities/Player.qml \
     qml/entities/ResetSensor.qml \
+    qml/entities/Splat.qml \
     qml/entities/Tile.qml \
     qml/entities/TileEntityBase.qml \
     qml/game/GameOverScreen.qml \
