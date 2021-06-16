@@ -12,6 +12,9 @@ EntityBase {
     property alias collider: collider
     property alias horizontalVelocity: collider.linearVelocity.x
     property int contacts: 0
+    property int life : 100
+    property int armor : 50
+    property int attack : 50
 
     state: contacts > 0 ? "walking" : "jumping"
     onStateChanged: console.debug("player.state " + state)
@@ -21,7 +24,7 @@ EntityBase {
     }
 
     onGameOver: {
-
+        life = 100
     }
 
     BoxCollider {
@@ -61,10 +64,23 @@ EntityBase {
         }
     }
 
-    function shoot() {
+    function takeDamage()
+    {
+        life = life - 20;
 
-
+        if(life < 0)
+        {
+            player.gameOver()
+        }
     }
 
+    function takeObject()
+    {
+        life = life + 50
+        if(life > 100)
+        {
+            life = 100
+        }
+    }
 }
 

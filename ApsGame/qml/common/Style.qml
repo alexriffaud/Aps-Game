@@ -12,4 +12,5 @@ QtObject  {
     property var greenColor: "green"
     property int textSize1: 25
     property int textSize2: 14
+    property int textSize3: 12
 }

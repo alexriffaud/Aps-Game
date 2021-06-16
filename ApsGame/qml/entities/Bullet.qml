@@ -7,35 +7,42 @@ EntityBase {
     entityType: "bullet"
     x: start.x
     y: start.y
+    width: 17
+    height: 17
 
     property point start
     property point velocity
     property int bulletType // 0 normal bullet, 1 strong bullet
 
     MultiResolutionImage {
-        id: shoot
         source: "../../assets/img/shoot.png"
     }
 
     BoxCollider {
         id: boxCollider
-        width: 10
-        height: 10
         anchors.fill: parent
         collisionTestingOnlyMode: true
-        density: 0
-        friction: 0
-        restitution: 0
-        body.bullet: true
-        body.fixedRotation: false // if set to true the physics engine will NOT apply rotation to it
+        bodyType: Body.Dynamic
+        fixedRotation: true
+        bullet: true
+        sleepingAllowed: false
+//        bodyType: Body.Dynamic
+//        density: 0
+//        friction: 0
+//        restitution: 0
+//        body.fixedRotation: false // if set to true the physics engine will NOT apply rotation to it
 
         fixture.onBeginContact: {
             var collidedEntity = other.getBody().target;
             var otherEntityId = collidedEntity.entityId;
             var otherEntityParent = collidedEntity.parent;
 
+            console.log("hit")
+            console.log(otherEntityId)
+            bulletEntity.destroy();
             if (otherEntityId.substring(0, 3) !== "lak" && otherEntityId.substring(0, 3) !== "pow") {
-                bulletEntity.destroy();
+
+                console.log(otherEntityId.substring(0, 4))
 
                 // show a splat image for a certain amount of time after removing the bullet
                 entityManager.createEntityFromUrlWithProperties(
@@ -48,10 +55,10 @@ EntityBase {
                             );
 
 //                // check if it hit a player
-//                if (otherEntityId.substring(0, 4) === "tank") {
-//                    // call damage method on playerred/playerblue
-//                    otherEntityParent.onDamageWithBulletType(bulletType);
-//                }
+                if (otherEntityId.substring(0, 4) === "mons") {
+                    // call damage method on playerred/playerblue
+                    collidedEntity.onDamageWithBullet();
+                }
 
             }
         }
@@ -61,7 +68,7 @@ EntityBase {
     MovementAnimation {
       target: bulletEntity
       property: "x"
-      velocity: bulletEntity.velocity.x
+      velocity: 120
       running: true
     }
 }

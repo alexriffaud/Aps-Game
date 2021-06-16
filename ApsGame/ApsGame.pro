@@ -44,8 +44,12 @@ SOURCES += src/main.cpp \
     src/ModelApplication.cpp \
     src/db/ScoreDAO.cpp \
     src/db/UserDAO.cpp \
+    src/obj/Character.cpp \
+    src/obj/Monster.cpp \
+    src/obj/Player.cpp \
     src/obj/Score.cpp \
     src/obj/User.cpp \
+    src/obj/Weapon.cpp \
     src/tools/ScoreList.cpp \
     src/tools/Tools.cpp
 
@@ -78,6 +82,8 @@ DISTFILES += \
     qml/common/Style.qml \
     qml/entities/BorderElement.qml \
     qml/entities/Bullet.qml \
+    qml/entities/Item.qml \
+    qml/entities/Monster.qml \
     qml/entities/Platform.qml \
     qml/entities/Player.qml \
     qml/entities/ResetSensor.qml \
@@ -110,8 +116,12 @@ HEADERS += \
     inc/ModelApplication.h \
     inc/db/ScoreDAO.h \
     inc/db/UserDAO.h \
+    inc/obj/Character.h \
+    inc/obj/Monster.h \
+    inc/obj/Player.h \
     inc/obj/Score.h \
     inc/obj/User.h \
+    inc/obj/Weapon.h \
     inc/tools/Enums.h \
     inc/tools/ScoreList.h \
     inc/tools/Tools.h

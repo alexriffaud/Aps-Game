@@ -35,9 +35,7 @@ SceneBase {
         sourceImage: "../../assets/img/background/layer2.png"
         anchors.bottom: gameScene.gameWindowAnchorItem.bottom
         anchors.horizontalCenter: gameScene.gameWindowAnchorItem.horizontalCenter
-        // we move the parallax layers at the same speed as the player
         movementVelocity: player.x > offsetBeforeScrollingStarts ? Qt.point(-player.horizontalVelocity,0) : Qt.point(0,0)
-        // the speed then gets multiplied by this ratio to create the parallax effect
         ratio: Qt.point(0.3,0)
     }
     ParallaxScrollingBackground {
@@ -58,7 +56,7 @@ SceneBase {
         PhysicsWorld {
             id: physicsWorld
             gravity: Qt.point(0, 25)
-            debugDrawVisible: false // enable this for physics debugging
+            debugDrawVisible: true // enable this for physics debugging
             z: 1000
 
             onPreSolve: {
@@ -78,6 +76,16 @@ SceneBase {
         Player {
             id: player
             x: 20
+            y: 100
+
+            onGameOver: {
+                gameScene.state = "gameOver"
+            }
+        }
+
+        Monster {
+            id: monster
+            x: 50
             y: 100
         }
 
@@ -199,47 +207,26 @@ SceneBase {
     Keys.forwardTo: controller
     TwoAxisController {
         id: controller
+        enabled : false
         onInputActionPressed: {
 
             if(actionName == "up") {
                 player.jump()
             }
             if(actionName == "fire") {
-                player.shoot()
-                // saves the last time a bullet was fired
-                var lastTime = 0
+                 var startX  = 0
+                if(player.x > offsetBeforeScrollingStarts)
+                {
+                    startX = player.x  +player.width / 2 + 10
+                }
+                else
+                {
+                     startX = player.x + player.width / 2 + 10
+                }
+                var startY = player.y  + player.width / 2 +5
 
-                // calculate the time between the current tap and the last time a bullet was fired
-                var currentTime = new Date().getTime()
-                var timeDiff = currentTime - lastTime
-
-                // if enough time has passed, create a new bullet
-
-                lastTime = currentTime
-
-                // TODO : play either the icicle or snowball sound depending on the current bullet type
-
-
-                // pick a bullet speed depending on the current powerup
-                var speed = 140
-
-                // pick the calculation of the tankBody and add 90 because of the rotated image
-                //            var rotation = tank.tankBody.rotation + 90
-
-                // calculate a bullet movement vector with the rotation and the speed
-                var xDirection = Math.cos(0 * Math.PI / 180.0) * speed
-                var yDirection = Math.sin(0 * Math.PI / 180.0) * speed
-
-                // calculate the bullet spawn point: start at the center of the tank translate it outside of the body towards the final direction
-                var startX = player.x + player.width / 2 + 5
-                var startY = player.y + player.height + 135
-
-                // create and remove bullet entities at runtime
                 entityManager.createEntityFromUrlWithProperties(Qt.resolvedUrl("../entities/Bullet.qml"), {
-                                                                    "start" : Qt.point(startX, startY),
-                                                                    "velocity" : Qt.point(xDirection, yDirection),
-                                                                    "rotation" :  0,
-                                                                    "bulletType" : 0});
+                                                                    "start" : Qt.point(startX, startY)});
             }
         }
     }
@@ -251,6 +238,24 @@ SceneBase {
 //        y: 30
 //        number: score
 //    }
+
+    Timer {
+        id: timer
+        property int chrono: 0
+        interval: 1000; running: false; repeat: true
+        onTriggered:
+        {
+            chrono++
+            time.text =  "Time = "+chrono
+        }
+    }
+
+    AppText {
+        id: time
+        color:  Style.whiteColor
+        fontSize: Style.textSize3
+        font.family: Style.customFont
+    }
 
     GameOverScreen {
         id: gameOverStats
@@ -282,13 +287,17 @@ SceneBase {
     }
 
     function startGame() {
+        controller.enabled = true
         jumpControl.enabled = true
         moveControl.enabled = true
+        timer.start()
     }
 
     function stopGame() {
+        controller.enabled = false
         jumpControl.enabled = false
         moveControl.enabled = false
+        timer.stop()
     }
 
     function gameOver() {
