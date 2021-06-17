@@ -81,11 +81,36 @@ SceneBase {
             onGameOver: {
                 gameScene.state = "gameOver"
             }
+
+            onDamageTaken: {
+                switch(player.life)
+                {
+                case 100:
+                    lifebar.source = Style.life100
+                    break
+                case 80:
+                    lifebar.source = Style.life80
+                    break
+                case 60:
+                    lifebar.source = Style.life60
+                    break
+                case 40:
+                    lifebar.source = Style.life40
+                    break
+                case 20:
+                    lifebar.source = Style.life20
+                    break
+                case 0:
+                    lifebar.source = Style.life0
+                    gameScene.state = "gameOver"
+                    break
+                }
+            }
         }
 
         Monster {
             id: monster
-            x: 50
+            x: 60
             y: 100
         }
 
@@ -255,6 +280,39 @@ SceneBase {
         color:  Style.whiteColor
         fontSize: Style.textSize3
         font.family: Style.customFont
+        anchors.top: parent.top
+        anchors.horizontalCenter: parent.horizontalCenter
+
+    }
+
+    ImageButton {
+        id: pauseButton
+        source: Language.pauseButtonPath
+        onClicked: {
+            pauseGame()
+        }
+        anchors.top: parent.top
+        anchors.right: parent.right
+    }
+
+    MultiResolutionImage {
+        id: lifebar
+        source: Style.life100
+        anchors.top: time.bottom
+        anchors.topMargin: 10
+        anchors.horizontalCenter: parent.horizontalCenter
+    }
+
+    ImageButton {
+        id: backButton
+        source: Language.backMenuButtonPath
+        onClicked: {
+            console.log("clicked")
+            gameScene.state = "backMenu"
+
+        }
+        anchors.top: parent.top
+        anchors.left: parent.left
     }
 
     GameOverScreen {
@@ -266,10 +324,33 @@ SceneBase {
 //        onUseCoinsPressed: parent.useCoinsPressed()
     }
 
+    BackScene {
+        id: backScene
+        opacity: 0
+
+        onPlayPressed: {
+            gameIsRunning = true
+            backScene.opacity = 0
+            startGame()
+            gameScene.state = "isPlaying"
+        }
+
+        onMenuPressed: {
+            stopGame()
+            mainItem.state = "menu"
+        }
+
+        onSavePressed: {
+
+        }
+    }
+
+
     onBackButtonPressed: {
         if(scene.state === "gameOver") mainItem.state = "menu"
         gameScene.state = "gameOver"
     }
+
 
     function enterScene() {
         state = "wait"
@@ -287,6 +368,9 @@ SceneBase {
     }
 
     function startGame() {
+        player.life = 100
+        lifebar.source = Style.life100
+        lifebar.opacity = 1
         controller.enabled = true
         jumpControl.enabled = true
         moveControl.enabled = true
@@ -297,7 +381,34 @@ SceneBase {
         controller.enabled = false
         jumpControl.enabled = false
         moveControl.enabled = false
+        gameIsRunning = false
+        lifebar.opacity = 0
         timer.stop()
+    }
+
+    function pauseGame() {
+        if(gameIsRunning)
+        {
+            timer.stop()
+            pauseButton.source = Language.playButtonPath
+
+            controller.enabled = false
+            jumpControl.enabled = false
+            moveControl.enabled = false
+
+            gameIsRunning = false
+        }
+        else
+        {
+            timer.start()
+            pauseButton.source = Language.pauseButtonPath
+
+            controller.enabled = true
+            jumpControl.enabled = true
+            moveControl.enabled = true
+
+            gameIsRunning = true
+        }
     }
 
     function gameOver() {
@@ -332,12 +443,27 @@ SceneBase {
             }
         },
         State {
+            name: "isPlaying"
+            PropertyChanges {target: gameScene; gameIsRunning: true}
+            PropertyChanges {target: physicsWorld; gravity: Qt.point(0, 25)}
+        },
+        State {
             name: "gameOver"
             PropertyChanges {target: gameOverStats; opacity: 1}
             PropertyChanges {target: physicsWorld; gravity: Qt.point(0, 25)}
             StateChangeScript {
                 script: {
                     gameOver()
+                }
+            }
+        },
+        State {
+            name: "backMenu"
+            PropertyChanges {target: backScene; opacity: 1}
+            PropertyChanges {target: physicsWorld; gravity: Qt.point(0, 25)}
+            StateChangeScript {
+                script: {
+                    pauseGame()
                 }
             }
         }
