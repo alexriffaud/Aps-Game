@@ -8,6 +8,7 @@ EntityBase {
     height: 50
 
     signal gameOver()
+    signal damageTaken()
 
     property alias collider: collider
     property alias horizontalVelocity: collider.linearVelocity.x
@@ -72,6 +73,8 @@ EntityBase {
         {
             player.gameOver()
         }
+
+        player.damageTaken()
     }
 
     function takeObject()
