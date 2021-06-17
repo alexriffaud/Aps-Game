@@ -19,6 +19,10 @@ QtObject  {
     property var signUpPath: "../../assets/img/language/english/signup.png"
     property var signUpTitlePath: "../../assets/img/language/english/sign-up-title.png"
     property var languagePath: "../../assets/img/language/english/language.png"
+    property var pauseButtonPath: "../../assets/img/pause.png"
+    property var playButtonPath: "../../assets/img/play.png"
+    property var backMenuButtonPath: "../../assets/img/backMenu.png"
+    property var savePath: "../../assets/img/language/english/save.png"
 
     property var login: "Login"
     property var password: "Password"
@@ -47,6 +51,7 @@ QtObject  {
         signUpPath= "../../assets/img/language/english/signup.png"
         signUpTitlePath= "../../assets/img/language/english/sign-up-title.png"
         languagePath= "../../assets/img/language/english/language.png"
+        savePath= "../../assets/img/language/english/save.png"
 
         birthdate = "Birth date"
         personalScore = "Personal scores"
@@ -76,6 +81,7 @@ QtObject  {
         signUpPath= "../../assets/img/language/french/signup.png"
         signUpTitlePath= "../../assets/img/language/french/sign-up-title.png"
         languagePath= "../../assets/img/language/french/language.png"
+        savePath= "../../assets/img/language/french/save.png"
 
         login= "Pseudo"
         personalScore =  "Mes scores"

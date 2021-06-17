@@ -13,4 +13,11 @@ QtObject  {
     property int textSize1: 25
     property int textSize2: 14
     property int textSize3: 12
+
+    property var life0: "../../assets/img/life0.png"
+    property var life20: "../../assets/img/life20.png"
+    property var life40: "../../assets/img/life40.png"
+    property var life60: "../../assets/img/life60.png"
+    property var life80: "../../assets/img/life80.png"
+    property var life100: "../../assets/img/life100.png"
 }
