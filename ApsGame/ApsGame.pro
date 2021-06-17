@@ -82,7 +82,7 @@ DISTFILES += \
     qml/common/Style.qml \
     qml/entities/BorderElement.qml \
     qml/entities/Bullet.qml \
-    qml/entities/Item.qml \
+    qml/entities/Capsule.qml \
     qml/entities/Monster.qml \
     qml/entities/Platform.qml \
     qml/entities/Player.qml \
@@ -96,6 +96,7 @@ DISTFILES += \
     qml/game/Numbers.qml \
     qml/game/WaitScreen.qml \
     qml/scenes/AccountScene.qml \
+    qml/scenes/BackScene.qml \
     qml/scenes/Connection.qml \
     qml/scenes/ConnectionScene.qml \
     qml/scenes/CreditsScene.qml \
