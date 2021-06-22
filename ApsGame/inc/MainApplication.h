@@ -15,6 +15,7 @@ class MainApplication : public QObject
     Q_PROPERTY(bool _isSignUp MEMBER _isSignUp NOTIFY changeSignUpState)
     Q_PROPERTY(bool _loginState MEMBER _loginState NOTIFY changeCheckLoginState)
     Q_PROPERTY(bool _accountChangeState MEMBER _loginState NOTIFY changeAccountState)
+    Q_PROPERTY(bool _saveScoreState MEMBER _saveScoreState NOTIFY changeSaveScoreState)
 
 public:
     MainApplication(QQmlApplicationEngine *engine);
@@ -28,23 +29,27 @@ public:
     Q_INVOKABLE void changeAccount(const QString &login, const QString &mail, const QString &firstName, const QString &password);
     Q_INVOKABLE void getGlobalScore();
     Q_INVOKABLE void getPersonalScore();
+    Q_INVOKABLE void saveScore(int score);
 
     Q_INVOKABLE bool isConnected() const;
     Q_INVOKABLE bool isSignUp() const;
     Q_INVOKABLE bool loginState() const;
     Q_INVOKABLE bool accountChangeState() const;
+    Q_INVOKABLE bool getSaveScoreState() const;
 
 signals:
     void changeLoginState();
     void changeSignUpState();
     void changeCheckLoginState();
     void changeAccountState();
+    void changeSaveScoreState();
 
 private slots:
     void setIsLogged(bool state);
     void setIsSignUp(bool isSignUp);
     void setLoginState(bool loginState);
     void setAccountChangeState(bool accountChangeState);
+    void setSaveScoreState(bool saveScoreState);
 
 private:
     QQmlApplicationEngine   *_engine;
@@ -56,6 +61,7 @@ private:
     bool                    _isSignUp = false;
     bool                    _loginState = false;
     bool                    _accountChangeState = false;
+    bool                    _saveScoreState = false;
 };
 
 #endif // MAINAPPLICATION_H

@@ -28,6 +28,9 @@ public:
     void getPersonalScore();
     bool parsePersonalScore(QNetworkReply *reply);
 
+    void saveScore(int score);
+    bool parseSaveScore(QNetworkReply *reply);
+
     void setToken(const QString &token);
     void setRequestNum(Request *requestNum);
 

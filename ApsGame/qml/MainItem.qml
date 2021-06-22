@@ -72,6 +72,7 @@ Item {
         }
         onScoresPressed: {
             mainItem.state = "scores"
+            mainApp.getGlobalScore()
         }
 
         onCreditsPressed: {
@@ -97,14 +98,37 @@ Item {
     GameScene {
         id: gameScene
 
+        MessageDialog {
+            id: messageDialogGame
+            title: qsTr("Error when trying to login")
+            function show(message) {
+                messageDialogGame.text = message;
+                messageDialogGame.open();
+            }
+        }
+
         onMenuPressed: {
             mainItem.state = "menu"
         }
         onNetworkPressed: {
-            vplayGameNetworkScene.initialStateBeforeShow = "game"
-            mainItem.state = "gameNetwork"
+            mainApp.saveScore(gameScene.score)
         }
         onUseCoinsPressed: {
+        }
+
+        Connections
+        {
+            target: mainApp
+            function onChangeSaveScoreState()
+            {
+                if(mainApp.getSaveScoreState() === true)
+                {
+                }
+                else
+                {
+                    messageDialogGame.show(qsTr("Error to save score"))
+                }
+            }
         }
     }
 
@@ -112,6 +136,16 @@ Item {
     {
         id: accountScene
         opacity: 0
+
+
+        MessageDialog {
+            id: messageDialogAccount
+            title: qsTr("Error when trying to login")
+            function show(message) {
+                messageDialogAccount.text = message;
+                messageDialogAccount.open();
+            }
+        }
 
         function checkLogin(login) {
             mainApp.checkLogin(login)
@@ -164,7 +198,6 @@ Item {
                 {
                     mainItem.state = "menu"
 
-                    messageDialog.show(qsTr("Your account has been update"))
                     accountScene.inputLogin.textEdit.text = currentUser.login();
                     accountScene.inputFirstName.textEdit.text = currentUser.firstname();
                     accountScene.inputMail.textEdit.text = currentUser.mail();
@@ -172,7 +205,7 @@ Item {
                 }
                 else
                 {
-                    messageDialog.show(qsTr("Error during the update"))
+                    messageDialogAccount.show(qsTr("Error during the update"))
                 }
             }
         }

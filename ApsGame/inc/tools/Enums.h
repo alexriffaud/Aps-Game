@@ -8,6 +8,7 @@ enum class Request
     CHANGE_ACCOUNT,
     GLOBAL_SCORE,
     PERSONAL_SCORE,
+    SAVE_SCORE,
     DISCONNECT
 };
 #endif // ENUMS_H

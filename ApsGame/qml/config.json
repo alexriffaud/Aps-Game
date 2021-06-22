@@ -1,8 +1,8 @@
 {
     "title": "ApsGame",
     "identifier": "com.esimed.wizardEVP.ApsGame",
-    "orientation": "landscape",
-    "versioncode": 1,
+    "orientation": "portrait",
+    "versioncode": 33,
     "versionname": "1.0.0",
     "stage": "test"
 }

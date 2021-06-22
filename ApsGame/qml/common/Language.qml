@@ -23,6 +23,7 @@ QtObject  {
     property var playButtonPath: "../../assets/img/play.png"
     property var backMenuButtonPath: "../../assets/img/backMenu.png"
     property var savePath: "../../assets/img/language/english/save.png"
+    property var winPath: "../../assets/img/win.png"
 
     property var login: "Login"
     property var password: "Password"

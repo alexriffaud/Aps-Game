@@ -3,7 +3,7 @@
 DatabaseApplication::DatabaseApplication(ModelApplication *modelApplication) :
     _modelApplication(modelApplication),
     _manager(),
-    _address("https://127.0.0.1:8080/api/v1/apsgame"),
+    _address("http://env-1021880.hidora.com/api/v1/apsgame"),
     _token(""),
     _connectionState(false),
     _userDAO(modelApplication, &_manager, _address, &_requestNum),
@@ -30,7 +30,7 @@ QVariant DatabaseApplication::onResult(QNetworkReply *reply)
     {
         result = _userDAO.parseConnect(reply);
         _token = _userDAO.token();
-        _scoreDAO.setToken(_token);
+        _scoreDAO.setToken(_userDAO.token());
         emit changeLoginState(result.toBool());
         qDebug() << "Request::CONNECT:";
         break;
@@ -63,6 +63,12 @@ QVariant DatabaseApplication::onResult(QNetworkReply *reply)
     {
         result = _scoreDAO.parsePersonalScore(reply);
         emit changePersonalScoreState(result.toBool());
+        break;
+    }
+    case Request::SAVE_SCORE:
+    {
+        result = _scoreDAO.parseSaveScore(reply);
+        emit changeSaveScoreState(result.toBool());
         break;
     }
     default:

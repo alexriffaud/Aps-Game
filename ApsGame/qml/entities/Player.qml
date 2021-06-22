@@ -9,6 +9,7 @@ EntityBase {
 
     signal gameOver()
     signal damageTaken()
+    signal monsterTouched()
 
     property alias collider: collider
     property alias horizontalVelocity: collider.linearVelocity.x
@@ -79,11 +80,13 @@ EntityBase {
 
     function takeObject()
     {
-        life = life + 50
+        life = life + 20
         if(life > 100)
         {
             life = 100
         }
+        player.damageTaken()
+        player.monsterTouched()
     }
 }
 

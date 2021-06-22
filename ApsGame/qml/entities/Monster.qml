@@ -9,11 +9,14 @@ EntityBase {
     height: 50
 
     property alias collider: collider
+    property alias movementAnimation: movementAnimation
     property alias horizontalVelocity: collider.linearVelocity.x
     property int contacts: 0
     property int life : 100
     property int armor : 20
     property int attack : 20
+
+    signal monsterKilled()
 
     MultiResolutionImage {
         source: "../../assets/img/monster/monster.png"
@@ -42,12 +45,15 @@ EntityBase {
     }
 
     // animate the bullet along its x-axis
-//    MovementAnimation {
-//      target: monster
-//      property: "x"
-//      velocity: monster.velocity.x
-//      running: true
-//    }
+     SequentialAnimation  {
+         id : movementAnimation
+         running: false
+         loops: Animation.Infinite
+         NumberAnimation { target: monster; property: "x"; to: monster.x +20; duration: 1000 }
+         NumberAnimation { target: monster; property: "x"; to: monster.x - 10; duration: 1000 }
+     }
+
+
 
     function onDamageWithBullet()
     {
@@ -55,6 +61,7 @@ EntityBase {
 
         if(life < 0)
         {
+            monster.monsterKilled()
             monster.destroy()
         }
     }

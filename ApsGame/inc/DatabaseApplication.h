@@ -32,6 +32,7 @@ signals:
     void changeAccountState(bool state);
     void changeGlobalScoreState(bool state);
     void changePersonalScoreState(bool state);
+    void changeSaveScoreState(bool state);
 
 private:
     ModelApplication    *_modelApplication;

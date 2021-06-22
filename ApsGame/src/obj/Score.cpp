@@ -5,10 +5,11 @@ Score::Score()
 
 }
 
-Score::Score(int id, int score, QString user) :
+Score::Score(int id, int score, QString user, QString date) :
     _ID(id),
     _score(score),
-    _user(user)
+    _user(user),
+    _date(date)
 {
 
 }
@@ -41,4 +42,14 @@ QString Score::user() const
 void Score::setUser(const QString &user)
 {
     _user = user;
+}
+
+QString Score::date() const
+{
+    return _date;
+}
+
+void Score::setDate(const QString &date)
+{
+    _date = date;
 }

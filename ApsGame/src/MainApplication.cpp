@@ -9,6 +9,7 @@ MainApplication::MainApplication(QQmlApplicationEngine *engine) :
     connect(&_databaseApplication, SIGNAL(changeSignUpState(bool)), this, SLOT(setIsSignUp(bool)));
     connect(&_databaseApplication, SIGNAL(changeCheckLoginState(bool)), this, SLOT(setLoginState(bool)));
     connect(&_databaseApplication, SIGNAL(changeAccountState(bool)), this, SLOT(setAccountChangeState(bool)));
+    connect(&_databaseApplication, SIGNAL(changeSaveScoreState(bool)), this, SLOT(setSaveScoreState(bool)));
 }
 
 ModelApplication *MainApplication::modelApplication()
@@ -48,6 +49,17 @@ void MainApplication::setAccountChangeState(bool accountChangeState)
 {
     _accountChangeState = accountChangeState;
     emit changeAccountState();
+}
+
+void MainApplication::setSaveScoreState(bool saveScoreState)
+{
+    _saveScoreState = saveScoreState;
+    emit changeSaveScoreState();
+}
+
+bool MainApplication::getSaveScoreState() const
+{
+    return _saveScoreState;
 }
 
 
@@ -146,6 +158,11 @@ void MainApplication::getGlobalScore()
 void MainApplication::getPersonalScore()
 {
     _databaseApplication.scoreDAO()->getPersonalScore();
+}
+
+void MainApplication::saveScore(int score)
+{
+    _databaseApplication.scoreDAO()->saveScore(score);
 }
 
 bool MainApplication::isConnected() const

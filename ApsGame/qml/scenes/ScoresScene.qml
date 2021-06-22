@@ -14,7 +14,7 @@ Scene {
     }
 
 
-    ImageButton {
+    MultiResolutionImage {
         id: scoresTitle
         anchors.horizontalCenter: parent.horizontalCenter
         source: Language.scoresTitlePath
@@ -22,6 +22,14 @@ Scene {
 
     Scores {
         anchors.top: scoresTitle.bottom
+
+        onPersonalScore: {
+            mainApp.getPersonalScore()
+        }
+
+        onGlobalScore: {
+            mainApp.getGlobalScore()
+        }
     }
 
     ImageButton {

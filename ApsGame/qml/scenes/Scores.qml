@@ -6,8 +6,17 @@ import "../common"
 Column {
     id: scores
     anchors.horizontalCenter: parent.horizontalCenter
+    height: 500
+    width: parent.width
+    property alias scoreList: scoreList
+    clip: true
+
+    signal personalScore()
+    signal globalScore()
 
     Row {
+        anchors.horizontalCenter: parent.horizontalCenter
+        spacing: 10
         AppText {
             id: chooseScoreTab
             text: "Personal scores"
@@ -19,32 +28,58 @@ Column {
         AppSwitch {
             id: chooseSwitch
             checked: false
+
+            onCheckedChanged: {
+                if(checked)
+                {
+                    scores.personalScore()
+                }
+                else
+                {
+                    scores.globalScore()
+                }
+            }
         }
     }
 
     ListView {
+        anchors.top: chooseScoreTab.bottom
         id: scoreList
-        anchors.topMargin: 50
+        anchors.topMargin: 75
         anchors.fill: parent
         anchors.leftMargin: 10
         anchors.rightMargin: 10
+        anchors.bottomMargin: 200
+
         spacing: 5
         clip: true
 
         model: modelScores
         delegate: Rectangle {
-            height: 130
+            height: 30
             width: parent.width
             color: Style.transparentColor
             border.width: 2
             border.color: Style.whiteColor
             Row {
+                anchors.topMargin: 10
+                anchors.leftMargin: 10
+                anchors.bottomMargin: 10
                 Text {
-                    text: '<b>Name:</b> ' + model.item.user + " : "
+                    x: 5
+                    y: 5
+                    text: '<b>Name:</b> ' + model.item.user + " :       "
                     color: Style.whiteColor
                 }
                 Text {
-                    text: model.item.score
+                    y : 5
+                    text: "   "+model.item.score
+                    color: Style.whiteColor
+                }
+
+                Text {
+                    y : 5
+                    text: "   "+model.item.date
                     color: Style.whiteColor
                 }
             }

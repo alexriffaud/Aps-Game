@@ -16,20 +16,25 @@ EntityBase {
 
     MultiResolutionImage {
         source: "../../assets/img/shoot.png"
+        width: parent.width
+        height: parent.height
+        x: boxCollider.x
+        y: boxCollider.y
     }
 
     BoxCollider {
         id: boxCollider
-        anchors.fill: parent
+        width: parent.width
+        height: parent.height
         collisionTestingOnlyMode: true
         bodyType: Body.Dynamic
         fixedRotation: true
         bullet: true
         sleepingAllowed: false
 //        bodyType: Body.Dynamic
-//        density: 0
-//        friction: 0
-//        restitution: 0
+        density: 0
+        friction: 0
+        restitution: 0
 //        body.fixedRotation: false // if set to true the physics engine will NOT apply rotation to it
 
         fixture.onBeginContact: {
@@ -37,12 +42,8 @@ EntityBase {
             var otherEntityId = collidedEntity.entityId;
             var otherEntityParent = collidedEntity.parent;
 
-            console.log("hit")
-            console.log(otherEntityId)
             bulletEntity.destroy();
             if (otherEntityId.substring(0, 3) !== "lak" && otherEntityId.substring(0, 3) !== "pow") {
-
-                console.log(otherEntityId.substring(0, 4))
 
                 // show a splat image for a certain amount of time after removing the bullet
                 entityManager.createEntityFromUrlWithProperties(
@@ -68,7 +69,7 @@ EntityBase {
     MovementAnimation {
       target: bulletEntity
       property: "x"
-      velocity: 120
+      velocity: 160
       running: true
     }
 }

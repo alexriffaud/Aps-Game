@@ -1,5 +1,5 @@
 # allows to add DEPLOYMENTFOLDERS and links to the Felgo library and QtCreator auto-completion
-CONFIG += felgo felgo-live
+CONFIG += felgo quick core
 
 # uncomment this line to add the Live Client Module and use live reloading with your custom C++ code
 # for the remaining steps to build a custom Live Code Reload app see here: https://felgo.com/custom-code-reload-app/
@@ -9,7 +9,7 @@ CONFIG += felgo felgo-live
 # More information: https://felgo.com/doc/felgo-publishing/#project-configuration
 PRODUCT_IDENTIFIER = com.esimed.wizardEVP.ApsGame
 PRODUCT_VERSION_NAME = 1.0.0
-PRODUCT_VERSION_CODE = 1
+PRODUCT_VERSION_CODE = 33
 
 # Optionally set a license key that is used instead of the license key from
 # main.qml file (App::licenseKey for your app or GameWindow::licenseKey for your game)
@@ -17,15 +17,15 @@ PRODUCT_VERSION_CODE = 1
 # Not used if using Felgo Live
 PRODUCT_LICENSE_KEY = ""
 
-qmlFolder.source = qml
-DEPLOYMENTFOLDERS += qmlFolder # comment for publishing
+#qmlFolder.source = qml
+#DEPLOYMENTFOLDERS += qmlFolder # comment for publishing
 
 assetsFolder.source = assets
 DEPLOYMENTFOLDERS += assetsFolder
 
 # Add more folders to ship with the application here
 
-# RESOURCES += resources.qrc # uncomment for publishing
+RESOURCES += resources.qrc # uncomment for publishing
 
 # NOTE: for PUBLISHING, perform the following steps:
 # 1. comment the DEPLOYMENTFOLDERS += qmlFolder line above, to avoid shipping your qml files with the application (instead they get compiled to the app binary)
@@ -72,44 +72,46 @@ macx {
     ICON = macx/app_icon.icns
 }
 
-DISTFILES += \
-    qml/MainItem.qml \
-    qml/common/AudioManager.qml \
-    qml/common/Background.qml \
-    qml/common/Ground.qml \
-    qml/common/Language.qml \
-    qml/common/SceneBase.qml \
-    qml/common/Style.qml \
-    qml/entities/BorderElement.qml \
-    qml/entities/Bullet.qml \
-    qml/entities/Capsule.qml \
-    qml/entities/Monster.qml \
-    qml/entities/Platform.qml \
-    qml/entities/Player.qml \
-    qml/entities/ResetSensor.qml \
-    qml/entities/Splat.qml \
-    qml/entities/Tile.qml \
-    qml/entities/TileEntityBase.qml \
-    qml/game/GameOverScreen.qml \
-    qml/game/Level.qml \
-    qml/game/LevelBase.qml \
-    qml/game/Numbers.qml \
-    qml/game/WaitScreen.qml \
-    qml/scenes/AccountScene.qml \
-    qml/scenes/BackScene.qml \
-    qml/scenes/Connection.qml \
-    qml/scenes/ConnectionScene.qml \
-    qml/scenes/CreditsScene.qml \
-    qml/scenes/GameScene.qml \
-    qml/scenes/ImageButton.qml \
-    qml/scenes/InputLine.qml \
-    qml/scenes/Menu.qml \
-    qml/scenes/MenuScene.qml \
-    qml/scenes/Scores.qml \
-    qml/scenes/ScoresScene.qml \
-    qml/scenes/SettingsScene.qml \
-    qml/scenes/SignUpScene.qml \
-    qml/scenes/SplashScreenScene.qml
+#DISTFILES += \
+#    qml/MainItem.qml \
+#    qml/common/AudioManager.qml \
+#    qml/common/Background.qml \
+#    qml/common/Ground.qml \
+#    qml/common/Language.qml \
+#    qml/common/SceneBase.qml \
+#    qml/common/Style.qml \
+#    qml/entities/BorderElement.qml \
+#    qml/entities/Bullet.qml \
+#    qml/entities/Capsule.qml \
+#    qml/entities/Flag.qml \
+#    qml/entities/Monster.qml \
+#    qml/entities/Platform.qml \
+#    qml/entities/Player.qml \
+#    qml/entities/ResetSensor.qml \
+#    qml/entities/Splat.qml \
+#    qml/entities/Tile.qml \
+#    qml/entities/TileEntityBase.qml \
+#    qml/game/GameOverScreen.qml \
+#    qml/game/Level.qml \
+#    qml/game/LevelBase.qml \
+#    qml/game/Numbers.qml \
+#    qml/game/WaitScreen.qml \
+#    qml/game/WinScreen.qml \
+#    qml/scenes/AccountScene.qml \
+#    qml/scenes/BackScene.qml \
+#    qml/scenes/Connection.qml \
+#    qml/scenes/ConnectionScene.qml \
+#    qml/scenes/CreditsScene.qml \
+#    qml/scenes/GameScene.qml \
+#    qml/scenes/ImageButton.qml \
+#    qml/scenes/InputLine.qml \
+#    qml/scenes/Menu.qml \
+#    qml/scenes/MenuScene.qml \
+#    qml/scenes/Scores.qml \
+#    qml/scenes/ScoresScene.qml \
+#    qml/scenes/SettingsScene.qml \
+#    qml/scenes/SignUpScene.qml \
+#    qml/scenes/SplashScreenScene.qml
 
 HEADERS += \
     inc/DatabaseApplication.h \
@@ -134,3 +136,4 @@ INCLUDEPATH += \
     inc/db/ \
     inc/ \
     src/
+android: include(C:/Users/ariffaud/AppData/Local/Android/Sdk/android_openssl/openssl.pri)

@@ -13,6 +13,7 @@ SceneBase {
     property int score: 0
     property bool gameIsRunning: false
     property alias entityContainer: level
+    property int timeScore: 100
 
     signal menuPressed()
     signal networkPressed()
@@ -56,7 +57,7 @@ SceneBase {
         PhysicsWorld {
             id: physicsWorld
             gravity: Qt.point(0, 25)
-            debugDrawVisible: true // enable this for physics debugging
+            debugDrawVisible: false // enable this for physics debugging
             z: 1000
 
             onPreSolve: {
@@ -106,12 +107,42 @@ SceneBase {
                     break
                 }
             }
+
+            onMonsterTouched: {
+                score = score - 5
+            }
         }
 
         Monster {
             id: monster
             x: 60
             y: 100
+
+            onMonsterKilled: {
+                score = score + 15
+            }
+        }
+
+        Capsule {
+            id: capsule
+            x: 150
+            y: 50
+
+            onItemTaken : {
+                score = score + 10
+            }
+        }
+
+        Flag {
+            id: flag
+            x: 1200
+            y: 200
+
+            onEndGame: {
+                score = score + 100
+                stopGame()
+                gameScene.state = "win"
+            }
         }
 
         ResetSensor {
@@ -147,13 +178,30 @@ SceneBase {
         }
     }
 
+    WinScreen {
+        id: winScreen
+        onPlayPressed: gameScene.state = "wait"
+        onMenuPressed: parent.menuPressed()
+
+        AppText {
+            id: scoreTextWin
+            text: score
+            color:  Style.whiteColor
+            fontSize: Style.textSize1
+            font.family: Style.customFont
+            anchors.top: winScreen.menuBack.bottom
+            anchors.horizontalCenter: winScreen.horizontalCenter
+
+        }
+    }
+
     Rectangle {
         id: moveControl
 
         visible: !system.desktopPlatform
         enabled: visible
-        anchors.right: parent.right
-        anchors.bottom: parent.bottom
+        anchors.right: gameScene.right
+        anchors.bottom: viewPort.bottom
         height: 50
         width: 150
         color: Style.whiteColor
@@ -187,8 +235,8 @@ SceneBase {
         id: jumpControl
         visible: !system.desktopPlatform
         enabled: visible
-        anchors.left: parent.left
-        anchors.bottom: parent.bottom
+        anchors.left: gameScene.left
+        anchors.bottom: viewPort.bottom
         height: 100
         width: 100
         color: Style.whiteColor
@@ -210,7 +258,7 @@ SceneBase {
         id: fireControl
         visible: !system.desktopPlatform
         enabled: visible
-        anchors.left: jumpControl.left
+        anchors.left: gameScene.left
         anchors.bottom: jumpControl.top
         height: 100
         width: 100
@@ -225,7 +273,22 @@ SceneBase {
         }
         MouseArea {
             anchors.fill: parent
-            onPressed: player.shoot()
+            onPressed:
+            {
+                var startX  = 0
+               if(player.x > offsetBeforeScrollingStarts)
+               {
+                   startX = player.x  +player.width / 2 + 10
+               }
+               else
+               {
+                    startX = player.x + player.width / 2 + 10
+               }
+               var startY = player.y  + player.width / 2 +5
+
+               entityManager.createEntityFromUrlWithProperties(Qt.resolvedUrl("../entities/Bullet.qml"), {
+                                                                   "start" : Qt.point(startX, startY)});
+            }
         }
     }
 
@@ -256,14 +319,6 @@ SceneBase {
         }
     }
 
-
-    // displaying the score
-//    Numbers {
-//        anchors.horizontalCenter: parent.horizontalCenter
-//        y: 30
-//        number: score
-//    }
-
     Timer {
         id: timer
         property int chrono: 0
@@ -281,6 +336,17 @@ SceneBase {
         fontSize: Style.textSize3
         font.family: Style.customFont
         anchors.top: parent.top
+        anchors.horizontalCenter: parent.horizontalCenter
+
+    }
+
+    AppText {
+        id: scoreText
+        text: score
+        color:  Style.whiteColor
+        fontSize: Style.textSize1
+        font.family: Style.customFont
+        anchors.top: lifebar.bottom
         anchors.horizontalCenter: parent.horizontalCenter
 
     }
@@ -318,10 +384,19 @@ SceneBase {
     GameOverScreen {
         id: gameOverStats
 
+        AppText {
+            id: scoreTextLose
+            text: score
+            color:  Style.whiteColor
+            fontSize: Style.textSize1
+            font.family: Style.customFont
+            anchors.top: gameOverStats.menuBackOver.bottom
+            anchors.horizontalCenter: gameOverStats.horizontalCenter
+
+        }
+
         onPlayPressed: gameScene.state = "wait"
         onMenuPressed: parent.menuPressed()
-//        onNetworkPressed: parent.networkPressed()
-//        onUseCoinsPressed: parent.useCoinsPressed()
     }
 
     BackScene {
@@ -375,15 +450,28 @@ SceneBase {
         jumpControl.enabled = true
         moveControl.enabled = true
         timer.start()
+        monster.movementAnimation.running = true
+        scoreText.opacity = 1
+        score = 0
     }
 
     function stopGame() {
+        timeScore = timeScore - (timer.chrono * 0.75)
         controller.enabled = false
         jumpControl.enabled = false
         moveControl.enabled = false
         gameIsRunning = false
         lifebar.opacity = 0
         timer.stop()
+        if(monster) {
+            monster.movementAnimation.running = false
+        }
+        scoreText.opacity = 0
+
+        if(score > 0)
+        {
+            gameScene.networkPressed()
+        }
     }
 
     function pauseGame() {
@@ -397,6 +485,8 @@ SceneBase {
             moveControl.enabled = false
 
             gameIsRunning = false
+
+            scoreText.opacity = 0
         }
         else
         {
@@ -408,6 +498,8 @@ SceneBase {
             moveControl.enabled = true
 
             gameIsRunning = true
+
+            scoreText.opacity = 1
         }
     }
 
@@ -431,6 +523,11 @@ SceneBase {
                     initGame()
                 }
             }
+        },
+        State {
+            name: "win"
+            PropertyChanges {target: winScreen; opacity: 1}
+            PropertyChanges {target: physicsWorld; gravity: Qt.point(0, 25)}
         },
         State {
             name: "play"

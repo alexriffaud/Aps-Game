@@ -14,7 +14,7 @@ Item {
     signal playPressed()
     signal menuPressed()
 
-
+    property alias menuBackOver: menuBackOver
 
     MultiResolutionImage {
         id: image
@@ -34,6 +34,7 @@ Item {
     }
 
     ImageButton {
+        id: menuBackOver
         anchors.top: menuItem.bottom
         anchors.horizontalCenter: parent.horizontalCenter
         onClicked: {
