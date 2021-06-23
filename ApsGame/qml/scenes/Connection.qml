@@ -11,9 +11,6 @@ Column {
     property alias inputLogin: inputLogin
     property alias inputPassword: inputPassword
 
-    //0 = english
-    property int languageState: 0
-
     spacing: 18
     anchors.horizontalCenter: parent.horizontalCenter
     height: connectionItem.height
@@ -62,15 +59,15 @@ Column {
     ImageButton {
         anchors.horizontalCenter: parent.horizontalCenter
         onClicked: {
-            if(languageState === 0)
+            if(Language.languageState === 0)
             {
                 Language.isFrench();
-                languageState = 1;
+                Language.languageState = 1;
             }
             else
             {
                 Language.isEnglish();
-                languageState = 0;
+                Language.languageState = 0;
             }
         }
         source: Language.languagePath

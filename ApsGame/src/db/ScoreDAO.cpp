@@ -90,10 +90,6 @@ void ScoreDAO::getPersonalScore()
     const QByteArray basic_authorization = _token.toUtf8();
     _request.setRawHeader(QByteArrayLiteral("Authorization"), "Bearer "+basic_authorization);
 
-    QJsonObject scoreJSON;
-    scoreJSON["id"] = _modelApplication->user()->ID();
-
-
     _request.setUrl(QUrl(_address + "/personalscore?id="+QString::number( _modelApplication->user()->ID())));
 
     _manager->get(_request);

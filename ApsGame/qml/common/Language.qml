@@ -24,6 +24,8 @@ QtObject  {
     property var backMenuButtonPath: "../../assets/img/backMenu.png"
     property var savePath: "../../assets/img/language/english/save.png"
     property var winPath: "../../assets/img/win.png"
+    //0 = english
+    property int languageState: 0
 
     property var login: "Login"
     property var password: "Password"

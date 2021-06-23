@@ -52,7 +52,7 @@ QVector<QObject *> *ScoreList::items()
     return &_items;
 }
 
-void ScoreList::updateEventItem(Score* score)
+void ScoreList::updateItem(Score* score)
 {
     int i = 0;
     for (i = 0; i < _items.size(); ++i)

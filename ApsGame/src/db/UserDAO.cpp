@@ -84,7 +84,12 @@ void UserDAO::signUp(QByteArray bytes)
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
     Tools::setSSLConfiguration(&request);
 
-    _manager->post(request, bytes);
+    QNetworkAccessManager *manager = new QNetworkAccessManager(this);
+
+    QObject::connect(manager, SIGNAL(finished(QNetworkReply*)),
+                     this, SLOT(onResult(QNetworkReply*)));
+
+    manager->post(request, bytes);
 }
 
 bool UserDAO::parseSignUp(QNetworkReply *reply)
@@ -124,7 +129,7 @@ void UserDAO::checkLoginState(QByteArray bytes)
 
     QUrl url(_address + "/checklogin");
     QNetworkRequest request(url);
-    qDebug() << _token;
+
     const QByteArray basic_authorization = _token.toUtf8();
 
     request.setRawHeader(QByteArrayLiteral("Authorization"), "Bearer "+basic_authorization);
@@ -132,7 +137,12 @@ void UserDAO::checkLoginState(QByteArray bytes)
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
     Tools::setSSLConfiguration(&request);
 
-    _manager->post(request, bytes);
+    QNetworkAccessManager *manager = new QNetworkAccessManager(this);
+
+    QObject::connect(manager, SIGNAL(finished(QNetworkReply*)),
+                     this, SLOT(onResult(QNetworkReply*)));
+
+    manager->post(request, bytes);
 }
 
 bool UserDAO::parseLoginState(QNetworkReply *reply)
@@ -179,7 +189,12 @@ void UserDAO::changeAccount(QByteArray bytes)
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
     Tools::setSSLConfiguration(&request);
 
-    _manager->put(request, bytes);
+    QNetworkAccessManager *manager = new QNetworkAccessManager(this);
+
+    QObject::connect(manager, SIGNAL(finished(QNetworkReply*)),
+                     this, SLOT(onResult(QNetworkReply*)));
+
+    manager->put(request, bytes);
 }
 
 bool UserDAO::parseChangeAccount(QNetworkReply *reply)

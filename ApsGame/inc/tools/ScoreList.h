@@ -21,7 +21,7 @@ public slots:
     void insert(QObject* item);
     void remove(QObject* item);
     void removeAll();
-    void updateEventItem(Score *score);
+    void updateItem(Score *score);
     void clear();
     int size();
     QObject * at(int index);

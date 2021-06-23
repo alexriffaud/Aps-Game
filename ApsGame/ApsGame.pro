@@ -20,12 +20,12 @@ PRODUCT_LICENSE_KEY = ""
 #qmlFolder.source = qml
 #DEPLOYMENTFOLDERS += qmlFolder # comment for publishing
 
-assetsFolder.source = assets
+assetsFolder.source = $${PWD}/assets
 DEPLOYMENTFOLDERS += assetsFolder
 
 # Add more folders to ship with the application here
 
-RESOURCES += resources.qrc # uncomment for publishing
+RESOURCES += $${PWD}/resources.qrc # uncomment for publishing
 
 # NOTE: for PUBLISHING, perform the following steps:
 # 1. comment the DEPLOYMENTFOLDERS += qmlFolder line above, to avoid shipping your qml files with the application (instead they get compiled to the app binary)
@@ -38,34 +38,33 @@ RESOURCES += resources.qrc # uncomment for publishing
 
 
 # The .cpp file which was generated for your project. Feel free to hack it.
-SOURCES += src/main.cpp \
-    src/DatabaseApplication.cpp \
-    src/MainApplication.cpp \
-    src/ModelApplication.cpp \
-    src/db/ScoreDAO.cpp \
-    src/db/UserDAO.cpp \
-    src/obj/Score.cpp \
-    src/obj/User.cpp \
-    src/tools/ScoreList.cpp \
-    src/tools/Tools.cpp
+SOURCES += $${PWD}/src/DatabaseApplication.cpp \
+    $${PWD}/src/MainApplication.cpp \
+    $${PWD}/src/ModelApplication.cpp \
+    $${PWD}/src/db/ScoreDAO.cpp \
+    $${PWD}/src/db/UserDAO.cpp \
+    $${PWD}/src/obj/Score.cpp \
+    $${PWD}/src/obj/User.cpp \
+    $${PWD}/src/tools/ScoreList.cpp \
+    $${PWD}/src/tools/Tools.cpp
 
 
 android {
     ANDROID_PACKAGE_SOURCE_DIR = $$PWD/android
-    OTHER_FILES += android/AndroidManifest.xml       android/build.gradle
+    OTHER_FILES += $${PWD}/android/AndroidManifest.xml       $${PWD}/android/build.gradle
 }
 
 ios {
-    QMAKE_INFO_PLIST = ios/Project-Info.plist
+    QMAKE_INFO_PLIST = $${PWD}/ios/Project-Info.plist
     OTHER_FILES += $$QMAKE_INFO_PLIST
 }
 
 # set application icons for win and macx
 win32 {
-    RC_FILE += win/app_icon.rc
+    RC_FILE += $${PWD}/win/app_icon.rc
 }
 macx {
-    ICON = macx/app_icon.icns
+    ICON = $${PWD}/macx/app_icon.icns
 }
 
 #DISTFILES += \
@@ -110,22 +109,22 @@ macx {
 #    qml/scenes/SplashScreenScene.qml
 
 HEADERS += \
-    inc/DatabaseApplication.h \
-    inc/MainApplication.h \
-    inc/ModelApplication.h \
-    inc/db/ScoreDAO.h \
-    inc/db/UserDAO.h \
-    inc/obj/Score.h \
-    inc/obj/User.h \
-    inc/tools/Enums.h \
-    inc/tools/ScoreList.h \
-    inc/tools/Tools.h
+    $${PWD}/inc/DatabaseApplication.h \
+    $${PWD}/inc/MainApplication.h \
+    $${PWD}/inc/ModelApplication.h \
+    $${PWD}/inc/db/ScoreDAO.h \
+    $${PWD}/inc/db/UserDAO.h \
+    $${PWD}/inc/obj/Score.h \
+    $${PWD}/inc/obj/User.h \
+    $${PWD}/inc/tools/Enums.h \
+    $${PWD}/inc/tools/ScoreList.h \
+    $${PWD}/inc/tools/Tools.h
 
 INCLUDEPATH += \
-    inc/obj/ \
-    inc/tools/ \
-    src/tools/ \
-    inc/db/ \
-    inc/ \
-    src/
+    $${PWD}/inc/obj/ \
+    $${PWD}/inc/tools/ \
+    $${PWD}/src/tools/ \
+    $${PWD}/inc/db/ \
+    $${PWD}/inc/ \
+    $${PWD}/src/
 android: include(C:/Users/ariffaud/AppData/Local/Android/Sdk/android_openssl/openssl.pri)
