@@ -15,6 +15,9 @@ Scene {
     property alias inputFirstName: inputFirstName
     property alias inputPassword: inputPassword
 
+    //0 = english
+    property int languageState: 0
+
     Background
     {
         anchors.horizontalCenter: settingsScene.gameWindowAnchorItem.horizontalCenter
@@ -118,6 +121,7 @@ Scene {
         }
 
         ImageButton {
+            anchors.horizontalCenter: parent.horizontalCenter
             onClicked: {
                 if(languageState === 0)
                 {

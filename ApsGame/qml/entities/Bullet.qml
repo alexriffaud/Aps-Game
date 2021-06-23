@@ -31,17 +31,15 @@ EntityBase {
         fixedRotation: true
         bullet: true
         sleepingAllowed: false
-//        bodyType: Body.Dynamic
         density: 0
         friction: 0
         restitution: 0
-//        body.fixedRotation: false // if set to true the physics engine will NOT apply rotation to it
 
         fixture.onBeginContact: {
             var collidedEntity = other.getBody().target;
             var otherEntityId = collidedEntity.entityId;
             var otherEntityParent = collidedEntity.parent;
-
+            console.log(collidedEntity)
             bulletEntity.destroy();
             if (otherEntityId.substring(0, 3) !== "lak" && otherEntityId.substring(0, 3) !== "pow") {
 
@@ -55,10 +53,10 @@ EntityBase {
                             }
                             );
 
-//                // check if it hit a player
+                // check if it hit a monster
                 if (otherEntityId.substring(0, 4) === "mons") {
                     // call damage method on playerred/playerblue
-                    collidedEntity.onDamageWithBullet();
+                    collidedEntity.onDamageWithBullet(otherEntityId);
                 }
 
             }

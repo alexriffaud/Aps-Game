@@ -8,8 +8,8 @@ CONFIG += felgo quick core
 # Project identifier and version
 # More information: https://felgo.com/doc/felgo-publishing/#project-configuration
 PRODUCT_IDENTIFIER = com.esimed.wizardEVP.ApsGame
-PRODUCT_VERSION_NAME = 1.0.0
-PRODUCT_VERSION_CODE = 33
+PRODUCT_VERSION_NAME = 1.0.1
+PRODUCT_VERSION_CODE = 34
 
 # Optionally set a license key that is used instead of the license key from
 # main.qml file (App::licenseKey for your app or GameWindow::licenseKey for your game)
@@ -44,12 +44,8 @@ SOURCES += src/main.cpp \
     src/ModelApplication.cpp \
     src/db/ScoreDAO.cpp \
     src/db/UserDAO.cpp \
-    src/obj/Character.cpp \
-    src/obj/Monster.cpp \
-    src/obj/Player.cpp \
     src/obj/Score.cpp \
     src/obj/User.cpp \
-    src/obj/Weapon.cpp \
     src/tools/ScoreList.cpp \
     src/tools/Tools.cpp
 
@@ -119,12 +115,8 @@ HEADERS += \
     inc/ModelApplication.h \
     inc/db/ScoreDAO.h \
     inc/db/UserDAO.h \
-    inc/obj/Character.h \
-    inc/obj/Monster.h \
-    inc/obj/Player.h \
     inc/obj/Score.h \
     inc/obj/User.h \
-    inc/obj/Weapon.h \
     inc/tools/Enums.h \
     inc/tools/ScoreList.h \
     inc/tools/Tools.h

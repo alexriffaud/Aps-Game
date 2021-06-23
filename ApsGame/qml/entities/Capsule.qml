@@ -2,7 +2,7 @@ import QtQuick 2.0
 import Felgo 3.0
 
 EntityBase {
-
+    id: capsuleEntity
     entityId: capsule
     entityType: "capsule"
     height: 30
@@ -33,8 +33,8 @@ EntityBase {
             // check if it hit a player
             if (otherEntityId.substring(0, 4) === "play") {
                 collidedEntity.takeObject()
-                capsule.itemTaken()
-                capsule.destroy();
+                capsuleEntity.itemTaken()
+                capsuleEntity.destroy();
             }
         }
     }

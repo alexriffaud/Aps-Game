@@ -72,6 +72,76 @@ SceneBase {
 
         Level {
             id: level
+
+            Monster {
+                id: monster1
+                x: 500
+                y: 100
+
+                onMonsterKilled: {
+                    score = score + 15
+                }
+            }
+
+            Monster {
+                id: monster2
+                x: 100
+                y: 100
+
+                onMonsterKilled: {
+                    score = score + 15
+                }
+            }
+
+            Monster {
+                id: monster3
+                x: 250
+                y: 100
+
+                onMonsterKilled: {
+                    score = score + 15
+                }
+            }
+
+            Monster {
+                id: monster4
+                x: 800
+                y: 100
+
+                onMonsterKilled: {
+                    score = score + 15
+                }
+            }
+
+            Monster {
+                id: monster5
+                x: 1000
+                y: 100
+
+                onMonsterKilled: {
+                    score = score + 15
+                }
+            }
+
+            Capsule {
+                id: capsule
+                x: 150
+                y: 50
+
+                onItemTaken : {
+                    score = score + 10
+                }
+            }
+
+            Capsule {
+                id: capsule2
+                x: 700
+                y: 50
+
+                onItemTaken : {
+                    score = score + 10
+                }
+            }
         }
 
         Player {
@@ -110,26 +180,6 @@ SceneBase {
 
             onMonsterTouched: {
                 score = score - 5
-            }
-        }
-
-        Monster {
-            id: monster
-            x: 60
-            y: 100
-
-            onMonsterKilled: {
-                score = score + 15
-            }
-        }
-
-        Capsule {
-            id: capsule
-            x: 150
-            y: 50
-
-            onItemTaken : {
-                score = score + 10
             }
         }
 
@@ -438,7 +488,11 @@ SceneBase {
     function initGame() {
         player.x = 20
         player.y = 100
-
+        controller.enabled = false
+        jumpControl.enabled = false
+        moveControl.enabled = false
+        fireControl.enabled = false
+        gameIsRunning = false
         score = 0
     }
 
@@ -449,8 +503,13 @@ SceneBase {
         controller.enabled = true
         jumpControl.enabled = true
         moveControl.enabled = true
+        fireControl.enabled = true
         timer.start()
-        monster.movementAnimation.running = true
+        monster1.movementAnimation.running = true
+        monster2.movementAnimation.running = true
+        monster3.movementAnimation.running = true
+        monster4.movementAnimation.running = true
+        monster5.movementAnimation.running = true
         scoreText.opacity = 1
         score = 0
     }
@@ -460,11 +519,24 @@ SceneBase {
         controller.enabled = false
         jumpControl.enabled = false
         moveControl.enabled = false
+        fireControl.enabled = false
         gameIsRunning = false
         lifebar.opacity = 0
         timer.stop()
-        if(monster) {
-            monster.movementAnimation.running = false
+        if(monster1) {
+            monster1.movementAnimation.running = false
+        }
+        if(monster2) {
+            monster2.movementAnimation.running = false
+        }
+        if(monster3) {
+            monster3.movementAnimation.running = false
+        }
+        if(monster4) {
+            monster4.movementAnimation.running = false
+        }
+        if(monster5) {
+            monster5.movementAnimation.running = false
         }
         scoreText.opacity = 0
 
@@ -483,6 +555,7 @@ SceneBase {
             controller.enabled = false
             jumpControl.enabled = false
             moveControl.enabled = false
+            fireControl.enabled = false
 
             gameIsRunning = false
 
@@ -496,6 +569,7 @@ SceneBase {
             controller.enabled = true
             jumpControl.enabled = true
             moveControl.enabled = true
+            fireControl.enabled = true
 
             gameIsRunning = true
 

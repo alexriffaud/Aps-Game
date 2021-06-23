@@ -26,6 +26,7 @@ Scene {
         id: creditsText
         width: parent.width
         anchors.top: creditsTitle.bottom
+        anchors.bottom: backButton.top
         text: Language.credits
         padding: dp(10)
         color:  Style.whiteColor

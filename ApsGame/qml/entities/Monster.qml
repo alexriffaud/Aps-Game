@@ -2,7 +2,7 @@ import QtQuick 2.0
 import Felgo 3.0
 
 EntityBase {
-
+    id: monsterEntity
     entityId: monster
     entityType: "monster"
     width: 50
@@ -38,7 +38,7 @@ EntityBase {
             var otherEntityParent = collidedEntity.parent;
 
             // check if it hit a player
-            if (otherEntityId.substring(0, 3) === "pla") {
+            if (otherEntityId.substring(0, 4) === "play") {
                 collidedEntity.takeDamage()
             }
         }
@@ -49,20 +49,23 @@ EntityBase {
          id : movementAnimation
          running: false
          loops: Animation.Infinite
-         NumberAnimation { target: monster; property: "x"; to: monster.x +20; duration: 1000 }
-         NumberAnimation { target: monster; property: "x"; to: monster.x - 10; duration: 1000 }
+         NumberAnimation { target: monsterEntity; property: "x"; to: monsterEntity.x +20 +Math.ceil(Math.random() * 5); duration: 1000 }
+         NumberAnimation { target: monsterEntity; property: "x"; to: monsterEntity.x - 10-Math.ceil(Math.random() * 5); duration: 1000 }
      }
 
 
 
-    function onDamageWithBullet()
+    function onDamageWithBullet(otherEntityId)
     {
-        life = life-50
-
-        if(life < 0)
+        if(otherEntityId === monsterEntity.entityId)
         {
-            monster.monsterKilled()
-            monster.destroy()
+            life = life-50
+
+            if(life < 0)
+            {
+                monsterEntity.monsterKilled()
+                monsterEntity.destroy()
+            }
         }
     }
 }

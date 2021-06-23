@@ -9,8 +9,6 @@ Item {
     property alias audioManager: audioManager
     property alias entityManager: entityManager
 
-    property int coins
-
     // Sound management
     AudioManager {
         id: audioManager
@@ -246,6 +244,12 @@ Item {
         onBackPressed: {
             mainItem.state = "connexion"
             signupScene.opacity = 0
+
+            inputLogin.textEdit.text = ""
+            inputMail.textEdit.text = ""
+            inputFirstName.textEdit.text = ""
+            inputPassword.textEdit.text = ""
+            datePicker.selectedDate.setDate(new Date())
         }
 
         Connections

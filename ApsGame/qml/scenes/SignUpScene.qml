@@ -21,17 +21,8 @@ Scene {
         anchors.bottom: signupScene.gameWindowAnchorItem.bottom
     }
 
-    ImageButton {
-        id: creditsTitle
-        anchors.horizontalCenter: parent.horizontalCenter
-        onClicked: {
-            backPressed()
-        }
-        source: Language.signUpTitlePath
-    }
-
     Column {
-        anchors.top: creditsTitle.bottom
+        anchors.top: signupScene.top
         spacing: 18
         anchors.horizontalCenter: parent.horizontalCenter
         height: okButton.height
@@ -88,6 +79,7 @@ Scene {
             datePickerMode: dateMode
         }
         Row {
+            anchors.horizontalCenter: parent.horizontalCenter
             ImageButton {
                 id: okButton
                 onClicked: {

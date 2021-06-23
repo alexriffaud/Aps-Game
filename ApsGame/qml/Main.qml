@@ -5,8 +5,8 @@ import "common"
 
 GameWindow {
     id: window
-    screenWidth: 640
-    screenHeight: 960
+    screenWidth: 1080
+    screenHeight: 1920
 
     // You get free licenseKeys from https://felgo.com/licenseKey
     // With a licenseKey you can:
