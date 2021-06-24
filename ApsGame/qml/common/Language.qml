@@ -36,6 +36,14 @@ QtObject  {
     property var credits: "A video game or computer game is an electronic game that involves interaction with a user interface or input device – such as a joystick, controller, keyboard, or motion sensing device – to generate visual feedback. This feedback is shown on a video display device, such as a TV set, monitor, touchscreen, or virtual reality headset. Video games are often augmented with audio feedback delivered through speakers or headphones, and sometimes with other types of feedback, including haptic technology. "
     property var personalScore: "Personal scores"
 
+    property var error1: "All inputs are required"
+    property var error2: "Please enter more than 3 characters for each input"
+    property var error3: "Error during the update"
+    property var error4: "Error when trying to sign up"
+    property var error5: "Error when trying to login"
+    property var error6: "Error to save score"
+    property var erro7: ""
+
     function isEnglish()
     {
         accountPath= "../../assets/img/language/english/account.png"
@@ -55,6 +63,13 @@ QtObject  {
         signUpTitlePath= "../../assets/img/language/english/sign-up-title.png"
         languagePath= "../../assets/img/language/english/language.png"
         savePath= "../../assets/img/language/english/save.png"
+
+        error1= "All inputs are required"
+        error2= "Please enter more than 3 characters for each input"
+        error3= "Error during the update"
+        error4= "Error when trying to sign up"
+        error5= "Error when trying to login"
+        error6= "Error to save score"
 
         birthdate = "Birth date"
         personalScore = "Personal scores"
@@ -85,6 +100,13 @@ QtObject  {
         signUpTitlePath= "../../assets/img/language/french/sign-up-title.png"
         languagePath= "../../assets/img/language/french/language.png"
         savePath= "../../assets/img/language/french/save.png"
+
+        error1= "Tous les champs sont requits"
+        error2= "Veuillez entrer plus de 3 caractères dans les champs de saisie"
+        error3= "Erreur durant la mise à jour"
+        error4= "Erreur durant l'inscription"
+        error5= "Erreur durant la connexion"
+        error6= "Erreur durant la sauvegarde du score"
 
         login= "Pseudo"
         personalScore =  "Mes scores"

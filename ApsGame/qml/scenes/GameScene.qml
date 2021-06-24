@@ -26,8 +26,8 @@ SceneBase {
     }
 
     MultiResolutionImage {
-         height: Screen.desktopAvailableHeight
-         width: Screen.desktopAvailableWidth
+        height: Screen.desktopAvailableHeight
+        width: Screen.desktopAvailableWidth
         id: bg
         source: "../../assets/img/bg.png"
     }
@@ -211,11 +211,11 @@ SceneBase {
                 audioManager.play(audioManager.idDIE)
                 audioManager.play(audioManager.idHIT)
             }
-//            Rectangle {
-//                anchors.fill: parent
-//                color: Style.yellowColor
-//                opacity: 0.5
-//            }
+            //            Rectangle {
+            //                anchors.fill: parent
+            //                color: Style.yellowColor
+            //                opacity: 0.5
+            //            }
         }
     }
 
@@ -326,18 +326,18 @@ SceneBase {
             onPressed:
             {
                 var startX  = 0
-               if(player.x > offsetBeforeScrollingStarts)
-               {
-                   startX = player.x  +player.width / 2 + 10
-               }
-               else
-               {
+                if(player.x > offsetBeforeScrollingStarts)
+                {
+                    startX = player.x  +player.width / 2 + 10
+                }
+                else
+                {
                     startX = player.x + player.width / 2 + 10
-               }
-               var startY = player.y  + player.width / 2 +5
+                }
+                var startY = player.y  + player.width / 2 +5
 
-               entityManager.createEntityFromUrlWithProperties(Qt.resolvedUrl("../entities/Bullet.qml"), {
-                                                                   "start" : Qt.point(startX, startY)});
+                entityManager.createEntityFromUrlWithProperties(Qt.resolvedUrl("../entities/Bullet.qml"), {
+                                                                    "start" : Qt.point(startX, startY)});
             }
         }
     }
@@ -352,14 +352,14 @@ SceneBase {
                 player.jump()
             }
             if(actionName == "fire") {
-                 var startX  = 0
+                var startX  = 0
                 if(player.x > offsetBeforeScrollingStarts)
                 {
                     startX = player.x  +player.width / 2 + 10
                 }
                 else
                 {
-                     startX = player.x + player.width / 2 + 10
+                    startX = player.x + player.width / 2 + 10
                 }
                 var startY = player.y  + player.width / 2 +5
 
@@ -579,9 +579,6 @@ SceneBase {
 
     function gameOver() {
         stopGame()
-        if(score > 0) {
-//            gameNetwork.reportScore(score)
-        }
     }
 
     state: "wait"

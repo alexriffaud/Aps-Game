@@ -41,14 +41,14 @@ Item {
                 }
                 else
                 {
-                    messageDialog.show(qsTr("Error when trying to login"))
+                    messageDialog.show(Language.error5)
                 }
             }
         }
 
         MessageDialog {
             id: messageDialog
-            title: qsTr("Error when trying to login")
+            title: Language.error5
             function show(message) {
                 messageDialog.text = message;
                 messageDialog.open();
@@ -98,7 +98,7 @@ Item {
 
         MessageDialog {
             id: messageDialogGame
-            title: qsTr("Error when trying to login")
+            title: Language.error5
             function show(message) {
                 messageDialogGame.text = message;
                 messageDialogGame.open();
@@ -124,7 +124,7 @@ Item {
                 }
                 else
                 {
-                    messageDialogGame.show(qsTr("Error to save score"))
+                    messageDialogGame.show(Language.error6)
                 }
             }
         }
@@ -138,7 +138,7 @@ Item {
 
         MessageDialog {
             id: messageDialogAccount
-            title: qsTr("Error when trying to login")
+            title: Language.error3
             function show(message) {
                 messageDialogAccount.text = message;
                 messageDialogAccount.open();
@@ -203,7 +203,7 @@ Item {
                 }
                 else
                 {
-                    messageDialogAccount.show(qsTr("Error during the update"))
+                    messageDialogAccount.show(Language.error3)
                 }
             }
         }
@@ -238,7 +238,22 @@ Item {
         }
 
         onOkPressed: {
-            signup(inputLogin.textEdit.text, inputMail.textEdit.text, inputFirstName.textEdit.text, inputPassword.textEdit.text, datePicker.selectedDate)
+            if(inputLogin.textEdit.text.length < 2 &&
+               inputMail.textEdit.text.length < 2 &&
+               inputMail.textEdit.text.length < 2 &&
+               inputPassword.textEdit.text.length < 2) {
+                messageDialog.show(Language.error1)
+            }
+            else if(inputLogin.textEdit.text.length < 3 &&
+               inputMail.textEdit.text.length < 3 &&
+               inputMail.textEdit.text.length < 3 &&
+               inputPassword.textEdit.text.length < 3) {
+                messageDialog.show(Language.error2)
+            }
+            else
+            {
+                signup(inputLogin.textEdit.text, inputMail.textEdit.text, inputMail.textEdit.text, inputPassword.textEdit.text, datePicker.selectedDate)
+            }
         }
 
         onBackPressed: {
@@ -259,20 +274,19 @@ Item {
             {
                 if(mainApp.isSignUp() === true)
                 {
-                    console.log("Ok")
                     mainItem.state = "connexion"
                     signupScene.opacity = 0
                 }
                 else
                 {
-                    messageDialog.show(qsTr("Error when trying to sign up"))
+                    messageDialog.show(Language.error4)
                 }
             }
         }
 
         MessageDialog {
             id: messageDialogSignUp
-            title: qsTr("Error when trying to sign up")
+            title: Language.error4
             function show(message) {
                 messageDialogSignUp.text = message;
                 messageDialogSignUp.open();

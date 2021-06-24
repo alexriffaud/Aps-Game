@@ -4,9 +4,6 @@ import Felgo 3.0
 import "../common"
 import "../entities"
 
-
-// EMPTY SCENE
-
 SceneBase {
     id: sceneConnection
 

@@ -79,8 +79,3 @@ void User::setBirthdate(const QDate &birthdate)
 {
     _birthdate = birthdate;
 }
-
-ScoreList *User::personalScoreList()
-{
-    return &_personalScoreList;
-}

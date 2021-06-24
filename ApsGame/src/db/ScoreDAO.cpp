@@ -99,7 +99,7 @@ bool ScoreDAO::parsePersonalScore(QNetworkReply *reply)
 {
     qDebug() << "ScoreDAO::parsePersonalScore";
 
-    _modelApplication->user()->personalScoreList()->removeAll();
+    _modelApplication->globalScoreList()->removeAll();
     bool result = false;
 
     int statusCode = Tools::parseStatus(reply);
@@ -179,7 +179,6 @@ bool ScoreDAO::parseSaveScore(QNetworkReply *reply)
 {
     qDebug() << "ScoreDAO::parseSaveScore";
 
-    _modelApplication->user()->personalScoreList()->removeAll();
     bool result = false;
 
     int statusCode = Tools::parseStatus(reply);
