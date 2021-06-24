@@ -84,7 +84,7 @@ protected:
     QHash<int, QByteArray> roleNames() const override;
 
 private:
-    QVector<QObject*> _items;  /*!< an integer value */
+    QVector<QObject*> _items;  /*!< Container for Score */
 };
 
 #endif // SCORELIST_H

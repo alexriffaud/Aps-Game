@@ -5,12 +5,10 @@ DatabaseApplication::DatabaseApplication(ModelApplication *modelApplication) :
     _manager(),
     _address("http://env-1021880.hidora.com/api/v1/apsgame"),
     _token(""),
-    _connectionState(false),
     _userDAO(modelApplication, &_manager, _address, &_requestNum),
     _scoreDAO(modelApplication, &_manager, _address, &_requestNum)
 {
     QObject::connect(&_manager, SIGNAL(finished(QNetworkReply*)), this, SLOT(onResult(QNetworkReply*)));
-    _firstRequest = true;
 }
 
 DatabaseApplication::~DatabaseApplication()

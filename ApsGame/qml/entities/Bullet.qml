@@ -12,20 +12,21 @@ EntityBase {
 
     property point start
     property point velocity
-    property int bulletType // 0 normal bullet, 1 strong bullet
 
-    MultiResolutionImage {
+    Image {
+        id: bulletSprite
         source: "../../assets/img/shoot.png"
         width: parent.width
         height: parent.height
-        x: boxCollider.x
-        y: boxCollider.y
+        x: width / 2 +5
+        y: height / 2 +10
     }
 
     BoxCollider {
+        anchors.centerIn: bulletSprite
         id: boxCollider
-        width: parent.width
-        height: parent.height
+        width: bulletSprite.width
+        height: bulletSprite.height
         collisionTestingOnlyMode: true
         bodyType: Body.Dynamic
         fixedRotation: true
@@ -48,14 +49,12 @@ EntityBase {
                             Qt.resolvedUrl("Splat.qml"), {
                                 "z": 1,
                                 "x": bulletEntity.x,
-                                "y": bulletEntity.y,
-                                "rotation": bulletEntity.rotation
+                                "y": bulletEntity.y
                             }
                             );
 
                 // check if it hit a monster
                 if (otherEntityId.substring(0, 4) === "mons") {
-                    // call damage method on playerred/playerblue
                     collidedEntity.onDamageWithBullet(otherEntityId);
                 }
 
@@ -67,7 +66,7 @@ EntityBase {
     MovementAnimation {
       target: bulletEntity
       property: "x"
-      velocity: 160
+      velocity: 120
       running: true
     }
 }

@@ -21,7 +21,7 @@ SceneBase {
 
     EntityManager {
         id: entityManager
-        entityContainer: gameScene
+        entityContainer: level
 
     }
 
@@ -57,7 +57,7 @@ SceneBase {
         PhysicsWorld {
             id: physicsWorld
             gravity: Qt.point(0, 25)
-            debugDrawVisible: false // enable this for physics debugging
+            debugDrawVisible: true // enable this for physics debugging
             z: 1000
 
             onPreSolve: {
@@ -124,7 +124,7 @@ SceneBase {
             }
 
             Capsule {
-                id: capsule
+                id: capsule1
                 x: 150
                 y: 50
 
@@ -325,16 +325,10 @@ SceneBase {
             anchors.fill: parent
             onPressed:
             {
-                var startX  = 0
-                if(player.x > offsetBeforeScrollingStarts)
-                {
-                    startX = player.x  +player.width / 2 + 10
-                }
-                else
-                {
-                    startX = player.x + player.width / 2 + 10
-                }
-                var startY = player.y  + player.width / 2 +5
+
+                var startY = player.y
+
+                var startX = player.x + player.width / 2 + 10
 
                 entityManager.createEntityFromUrlWithProperties(Qt.resolvedUrl("../entities/Bullet.qml"), {
                                                                     "start" : Qt.point(startX, startY)});
@@ -352,15 +346,7 @@ SceneBase {
                 player.jump()
             }
             if(actionName == "fire") {
-                var startX  = 0
-                if(player.x > offsetBeforeScrollingStarts)
-                {
-                    startX = player.x  +player.width / 2 + 10
-                }
-                else
-                {
-                    startX = player.x + player.width / 2 + 10
-                }
+                var startX = player.x
                 var startY = player.y  + player.width / 2 +5
 
                 entityManager.createEntityFromUrlWithProperties(Qt.resolvedUrl("../entities/Bullet.qml"), {
@@ -494,6 +480,24 @@ SceneBase {
         fireControl.enabled = false
         gameIsRunning = false
         score = 0
+
+        score = 0
+
+//        entityManager.createEntityFromUrlWithProperties(Qt.resolvedUrl("../entities/Monster.qml"), {
+//                                                            "x" : 500, "y": 100, "id": monster1, "onMonsterKilled": {score = score + 15}});
+//        entityManager.createEntityFromUrlWithProperties(Qt.resolvedUrl("../entities/Monster.qml"), {
+//                                                            "x" : 100, "y": 100, "id": monster2, "onMonsterKilled": {score = score + 15}});
+//        entityManager.createEntityFromUrlWithProperties(Qt.resolvedUrl("../entities/Monster.qml"), {
+//                                                            "x" : 250, "y": 100, "id": monster3, "onMonsterKilled": {score = score + 15}});
+//        entityManager.createEntityFromUrlWithProperties(Qt.resolvedUrl("../entities/Monster.qml"), {
+//                                                            "x" : 800, "y": 100, "id": monster4, "onMonsterKilled": {score = score + 15}});
+//        entityManager.createEntityFromUrlWithProperties(Qt.resolvedUrl("../entities/Monster.qml"), {
+//                                                            "x" : 1000, "y": 100, "id": monster5, "onMonsterKilled": {score = score + 15}});
+
+//        entityManager.createEntityFromUrlWithProperties(Qt.resolvedUrl("../entities/Capsule.qml"), {
+//                                                            "x" : 150, "y": 50, "id": capsule1, "onItemTaken" : {score = score + 10}});
+//        entityManager.createEntityFromUrlWithProperties(Qt.resolvedUrl("../entities/Capsule.qml"), {
+//                                                            "x" : 700, "y": 50, "id": capsule2, "onItemTaken" : {score = score + 10}});
     }
 
     function startGame() {
@@ -511,7 +515,7 @@ SceneBase {
         monster4.movementAnimation.running = true
         monster5.movementAnimation.running = true
         scoreText.opacity = 1
-        score = 0
+
     }
 
     function stopGame() {
@@ -525,18 +529,29 @@ SceneBase {
         timer.stop()
         if(monster1) {
             monster1.movementAnimation.running = false
+            monster1.destroy()
         }
         if(monster2) {
             monster2.movementAnimation.running = false
+            monster2.destroy()
         }
         if(monster3) {
             monster3.movementAnimation.running = false
+            monster3.destroy()
         }
         if(monster4) {
             monster4.movementAnimation.running = false
+            monster4.destroy()
         }
         if(monster5) {
             monster5.movementAnimation.running = false
+            monster5.destroy()
+        }
+        if(capsule1) {
+            capsule1.destroy()
+        }
+        if(capsule2) {
+            capsule2.destroy()
         }
         scoreText.opacity = 0
 
