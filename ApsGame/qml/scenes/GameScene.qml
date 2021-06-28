@@ -57,7 +57,7 @@ SceneBase {
         PhysicsWorld {
             id: physicsWorld
             gravity: Qt.point(0, 25)
-            debugDrawVisible: true // enable this for physics debugging
+            debugDrawVisible: false // enable this for physics debugging
             z: 1000
 
             onPreSolve: {
@@ -73,74 +73,23 @@ SceneBase {
         Level {
             id: level
 
-            Monster {
-                id: monster1
-                x: 500
-                y: 100
+            function createItems()
+            {
+                var monster1 = entityManager.createEntityFromUrlWithProperties(Qt.resolvedUrl("../entities/Monster.qml"), {
+                                                                                   "x" : 500, "y": 100, entityId: "monster1", "onMonsterKilled": {score = score + 15}});
+                var monster2 = entityManager.createEntityFromUrlWithProperties(Qt.resolvedUrl("../entities/Monster.qml"), {
+                                                                                   "x" : 100, "y": 100, entityId: "monster2", "onMonsterKilled": {score = score + 15}});
+                var monster3 = entityManager.createEntityFromUrlWithProperties(Qt.resolvedUrl("../entities/Monster.qml"), {
+                                                                                   "x" : 250, "y": 100, entityId: "monster3", "onMonsterKilled": {score = score + 15}});
+                var monster4 = entityManager.createEntityFromUrlWithProperties(Qt.resolvedUrl("../entities/Monster.qml"), {
+                                                                                   "x" : 800, "y": 100, entityId: "monster4", "onMonsterKilled": {score = score + 15}});
+                var monster5 = entityManager.createEntityFromUrlWithProperties(Qt.resolvedUrl("../entities/Monster.qml"), {
+                                                                                   "x" : 1000, "y": 100, entityId: "monster5", "onMonsterKilled": {score = score + 15}});
 
-                onMonsterKilled: {
-                    score = score + 15
-                }
-            }
-
-            Monster {
-                id: monster2
-                x: 100
-                y: 100
-
-                onMonsterKilled: {
-                    score = score + 15
-                }
-            }
-
-            Monster {
-                id: monster3
-                x: 250
-                y: 100
-
-                onMonsterKilled: {
-                    score = score + 15
-                }
-            }
-
-            Monster {
-                id: monster4
-                x: 800
-                y: 100
-
-                onMonsterKilled: {
-                    score = score + 15
-                }
-            }
-
-            Monster {
-                id: monster5
-                x: 1000
-                y: 100
-
-                onMonsterKilled: {
-                    score = score + 15
-                }
-            }
-
-            Capsule {
-                id: capsule1
-                x: 150
-                y: 50
-
-                onItemTaken : {
-                    score = score + 10
-                }
-            }
-
-            Capsule {
-                id: capsule2
-                x: 700
-                y: 50
-
-                onItemTaken : {
-                    score = score + 10
-                }
+                var capsule1 = entityManager.createEntityFromUrlWithProperties(Qt.resolvedUrl("../entities/Capsule.qml"), {
+                                                                                   "x" : 150, "y": 50, entityId: "capsule1", "onItemTaken" : {score = score + 10}});
+                var capsule2 = entityManager.createEntityFromUrlWithProperties(Qt.resolvedUrl("../entities/Capsule.qml"), {
+                                                                                   "x" : 700, "y": 50, entityId: "capsule2", "onItemTaken" : {score = score + 10}});
             }
         }
 
@@ -206,7 +155,6 @@ SceneBase {
                 player.y = 100
                 if(gameScene.state === "gameOver")
                     return
-                coins+=score
                 gameScene.state = "gameOver"
                 audioManager.play(audioManager.idDIE)
                 audioManager.play(audioManager.idHIT)
@@ -346,8 +294,9 @@ SceneBase {
                 player.jump()
             }
             if(actionName == "fire") {
-                var startX = player.x
-                var startY = player.y  + player.width / 2 +5
+                var startY = player.y
+
+                var startX = player.x + player.width / 2 + 10
 
                 entityManager.createEntityFromUrlWithProperties(Qt.resolvedUrl("../entities/Bullet.qml"), {
                                                                     "start" : Qt.point(startX, startY)});
@@ -482,25 +431,11 @@ SceneBase {
         score = 0
 
         score = 0
-
-//        entityManager.createEntityFromUrlWithProperties(Qt.resolvedUrl("../entities/Monster.qml"), {
-//                                                            "x" : 500, "y": 100, "id": monster1, "onMonsterKilled": {score = score + 15}});
-//        entityManager.createEntityFromUrlWithProperties(Qt.resolvedUrl("../entities/Monster.qml"), {
-//                                                            "x" : 100, "y": 100, "id": monster2, "onMonsterKilled": {score = score + 15}});
-//        entityManager.createEntityFromUrlWithProperties(Qt.resolvedUrl("../entities/Monster.qml"), {
-//                                                            "x" : 250, "y": 100, "id": monster3, "onMonsterKilled": {score = score + 15}});
-//        entityManager.createEntityFromUrlWithProperties(Qt.resolvedUrl("../entities/Monster.qml"), {
-//                                                            "x" : 800, "y": 100, "id": monster4, "onMonsterKilled": {score = score + 15}});
-//        entityManager.createEntityFromUrlWithProperties(Qt.resolvedUrl("../entities/Monster.qml"), {
-//                                                            "x" : 1000, "y": 100, "id": monster5, "onMonsterKilled": {score = score + 15}});
-
-//        entityManager.createEntityFromUrlWithProperties(Qt.resolvedUrl("../entities/Capsule.qml"), {
-//                                                            "x" : 150, "y": 50, "id": capsule1, "onItemTaken" : {score = score + 10}});
-//        entityManager.createEntityFromUrlWithProperties(Qt.resolvedUrl("../entities/Capsule.qml"), {
-//                                                            "x" : 700, "y": 50, "id": capsule2, "onItemTaken" : {score = score + 10}});
     }
 
     function startGame() {
+        score = 0
+        timer.chrono = 0
         player.life = 100
         lifebar.source = Style.life100
         lifebar.opacity = 1
@@ -509,17 +444,19 @@ SceneBase {
         moveControl.enabled = true
         fireControl.enabled = true
         timer.start()
-        monster1.movementAnimation.running = true
-        monster2.movementAnimation.running = true
-        monster3.movementAnimation.running = true
-        monster4.movementAnimation.running = true
-        monster5.movementAnimation.running = true
+        level.createItems()
+        entityManager.getEntityById("monster1").movementAnimation.running = true
+        entityManager.getEntityById("monster2").movementAnimation.running = true
+        entityManager.getEntityById("monster3").movementAnimation.running = true
+        entityManager.getEntityById("monster4").movementAnimation.running = true
+        entityManager.getEntityById("monster5").movementAnimation.running = true
         scoreText.opacity = 1
 
     }
 
     function stopGame() {
         timeScore = timeScore - (timer.chrono * 0.75)
+        controller.xAxis = 0
         controller.enabled = false
         jumpControl.enabled = false
         moveControl.enabled = false
@@ -527,31 +464,31 @@ SceneBase {
         gameIsRunning = false
         lifebar.opacity = 0
         timer.stop()
-        if(monster1) {
-            monster1.movementAnimation.running = false
-            monster1.destroy()
+        if(entityManager.getEntityById("monster1")) {
+            entityManager.getEntityById("monster1").movementAnimation.running = false
+            entityManager.getEntityById("monster1").destroy()
         }
-        if(monster2) {
-            monster2.movementAnimation.running = false
-            monster2.destroy()
+        if(entityManager.getEntityById("monster2")) {
+            entityManager.getEntityById("monster2").movementAnimation.running = false
+            entityManager.getEntityById("monster2").destroy()
         }
-        if(monster3) {
-            monster3.movementAnimation.running = false
-            monster3.destroy()
+        if(entityManager.getEntityById("monster3")) {
+            entityManager.getEntityById("monster3").movementAnimation.running = false
+            entityManager.getEntityById("monster3").destroy()
         }
-        if(monster4) {
-            monster4.movementAnimation.running = false
-            monster4.destroy()
+        if(entityManager.getEntityById("monster4")) {
+            entityManager.getEntityById("monster4").movementAnimation.running = false
+            entityManager.getEntityById("monster4").destroy()
         }
-        if(monster5) {
-            monster5.movementAnimation.running = false
-            monster5.destroy()
+        if(entityManager.getEntityById("monster5")) {
+            entityManager.getEntityById("monster5").movementAnimation.running = false
+            entityManager.getEntityById("monster5").destroy()
         }
-        if(capsule1) {
-            capsule1.destroy()
+        if(entityManager.getEntityById("capsule1")) {
+            entityManager.getEntityById("capsule1").destroy()
         }
-        if(capsule2) {
-            capsule2.destroy()
+        if(entityManager.getEntityById("capsule2")) {
+            entityManager.getEntityById("capsule2").destroy()
         }
         scoreText.opacity = 0
 

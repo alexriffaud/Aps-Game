@@ -68,7 +68,7 @@ Column {
                 Text {
                     x: 5
                     y: 5
-                    text: '<b>Name:</b> ' + model.item.user + " :       "
+                    text: '<b>Name:</b>   ' + model.item.user + " :       "
                     color: Style.whiteColor
                 }
                 Text {
